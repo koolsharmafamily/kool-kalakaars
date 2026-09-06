@@ -1,0 +1,186 @@
+@import "tailwindcss";
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   KOOL KALAKAARS — DESIGN TOKENS
+   ───────────────────────────────────────────────────────────────────────────
+   Everything in @theme becomes BOTH a CSS custom property (var(--color-acid))
+   AND a Tailwind utility (bg-acid, text-acid, border-acid). One declaration,
+   two systems — so there is never a hex code living in two places.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+  /* Wipe Tailwind's default palette. If it is not a Kool Kalakaars colour it
+     does not exist, so nobody can reach for bg-blue-500 by muscle memory. */
+  --color-*: initial;
+
+  --color-transparent: transparent;
+  --color-current: currentColor;
+  --color-white: #ffffff;
+  --color-black: #000000;
+
+  /* ─── CORE PALETTE ──────────────────────────────────────────────────────
+     Indigo and violet carry 60-70% of the visual weight.
+     Magenta is the brand signature.                                        */
+  --color-indigo: #392989;   /* Deep base. Dominant background.             */
+  --color-violet: #5f278b;   /* Secondary surfaces, gradients.              */
+  --color-lilac: #985dc7;    /* DECORATIVE ONLY — see contrast note below.  */
+  --color-magenta: #b431a1;  /* Primary brand accent.                       */
+  --color-ice: #e9f9fb;      /* Primary text on dark; light-section ground. */
+
+  /* ═════════════════════════════════════════════════════════════════════
+     REMOVABLE ACCENTS — acid + flame
+     ─────────────────────────────────────────────────────────────────────
+     These two were added to the original five. To remove them entirely,
+     delete this block and repoint the four semantic aliases in the ACCENT
+     BINDINGS block directly below. Nothing else in the codebase references
+     --color-acid or --color-flame by name.
+     ═════════════════════════════════════════════════════════════════════ */
+  --color-acid: #f5e13c;     /* CTA fills, halftone pops, focus ring.       */
+  --color-flame: #ff5e3a;    /* Display-scale highlights, hover states.     */
+
+  /* ─── ACCENT BINDINGS ───────────────────────────────────────────────────
+     Components use these semantic names, never the raw accent names. To
+     drop acid and flame, change these four lines and nothing else:
+       --color-cta       -> var(--color-magenta)
+       --color-cta-ink   -> var(--color-ice)
+       --color-focus     -> var(--color-ice)
+       --color-highlight -> var(--color-magenta)                            */
+  --color-cta: var(--color-acid);         /* Primary button fill.           */
+  --color-cta-ink: var(--color-indigo);   /* Text ON primary button. 8.49:1 */
+  --color-focus: var(--color-acid);       /* Focus ring. 8.49:1 on indigo.  */
+  --color-highlight: var(--color-flame);  /* Display-scale accents only.    */
+
+  /* ─── SEMANTIC SURFACE + INK ────────────────────────────────────────────
+     Sections reference these, so a palette change never means a find-and-
+     replace across components.                                            */
+  --color-surface: var(--color-indigo);
+  --color-surface-2: var(--color-violet);
+  --color-surface-light: var(--color-ice);
+  --color-brand: var(--color-magenta);
+
+  --color-ink: var(--color-ice);          /* Body text on dark.   10.48:1   */
+  --color-ink-dark: var(--color-indigo);  /* Body text on light.  10.48:1   */
+
+  /* Muted text on dark. NOT lilac — lilac is 2.55:1 on indigo and fails
+     every WCAG threshold including the 3:1 non-text one. This is ice mixed
+     down to 72%, which measures 6.20:1 and reads as the same soft lavender
+     white that lilac was meant to provide. */
+  --color-ink-muted: color-mix(in srgb, var(--color-ice) 72%, var(--color-indigo));
+
+  /* Muted text on the light (ice) sections. */
+  --color-ink-muted-dark: color-mix(in srgb, var(--color-indigo) 78%, var(--color-ice));
+
+  /* Hairlines and dividers. Decorative only, never carries meaning. */
+  --color-rule: color-mix(in srgb, var(--color-lilac) 55%, transparent);
+
+  /* ─── TYPEFACES ─────────────────────────────────────────────────────────
+     One stack each. The browser falls through PER GLYPH, so a Hinglish line
+     pulls Latin from Manrope/Anton and Devanagari from Noto without any
+     class on the element and without a visible switch mid-sentence.        */
+  --font-display: var(--font-anton), var(--font-noto-dev), "Arial Narrow", sans-serif;
+  --font-body: var(--font-manrope), var(--font-noto-dev), system-ui, sans-serif;
+
+  /* ─── TYPE SCALE ────────────────────────────────────────────────────────
+     Every display size carries an explicit line-height. next/font supplies
+     size-adjusted fallback metrics, but the match is imperfect for a face
+     as condensed as Anton at 13vw — pinning line-height means a font swap
+     changes glyph shapes without ever changing box height. Zero CLS.       */
+  --text-hero: clamp(3.25rem, 13vw, 9rem);
+  --text-hero--line-height: 0.86;
+  --text-hero--letter-spacing: -0.02em;
+
+  --text-d1: clamp(2.75rem, 9vw, 6rem);
+  --text-d1--line-height: 0.9;
+  --text-d1--letter-spacing: -0.015em;
+
+  --text-d2: clamp(2rem, 6.5vw, 4rem);
+  --text-d2--line-height: 0.94;
+  --text-d2--letter-spacing: -0.01em;
+
+  --text-d3: clamp(1.5rem, 4.5vw, 2.5rem);
+  --text-d3--line-height: 1;
+
+  --text-eyebrow: 0.8125rem;
+  --text-eyebrow--line-height: 1;
+  --text-eyebrow--letter-spacing: 0.18em;
+
+  --text-lead: clamp(1.125rem, 2.5vw, 1.5rem);
+  --text-lead--line-height: 1.45;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.6;
+
+  --text-small: 0.875rem;
+  --text-small--line-height: 1.5;
+
+  --text-micro: 0.75rem;
+  --text-micro--line-height: 1.4;
+  --text-micro--letter-spacing: 0.06em;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BASE
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-behavior: smooth;
+  }
+
+  /* No scroll-jacking, and no smooth-scroll for anyone who asked for less
+     motion. Native scrolling everywhere else — no smooth-scroll library. */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    font-size: var(--text-body);
+    line-height: var(--text-body--line-height);
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Acid focus ring at 8.49:1 on indigo — the highest-contrast pairing the
+     palette can produce, and impossible to miss. */
+  :focus-visible {
+    outline: 3px solid var(--color-focus);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-magenta);
+    color: var(--color-ice);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   POP-ART TEXTURES
+   Halftone is a tiled radial-gradient, not an image asset — zero network
+   cost and it tiles to any size. Applied as a background, never animated.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@layer components {
+  .halftone {
+    background-image: radial-gradient(currentColor 1.5px, transparent 1.6px);
+    background-size: 8px 8px;
+  }
+
+  .halftone-lg {
+    background-image: radial-gradient(currentColor 3px, transparent 3.2px);
+    background-size: 16px 16px;
+  }
+
+  /* Screen-print misregistration. Static offset shadows only — this is a
+     text-shadow, never animated, and never applied to the LCP element. */
+  .misregister {
+    text-shadow:
+      2px 0 0 var(--color-magenta),
+      -2px 0 0 var(--color-highlight);
+  }
+}
