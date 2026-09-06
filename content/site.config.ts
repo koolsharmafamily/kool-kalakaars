@@ -80,6 +80,15 @@ export type FormFieldPreview = {
   hint?: string;
 };
 
+export type Sponsor = {
+  /** The organisation name, exactly as they write it. */
+  name: string;
+  /** Path to the logo, relative to /public. Prefer SVG, or PNG with alpha. */
+  logo: string;
+  /** Optional link to their site. Opens in a new tab. */
+  url?: string;
+};
+
 /* ═══════════════════════════════════════════════════════════════════════════
  * THE CONFIG
  * ═══════════════════════════════════════════════════════════════════════════ */
@@ -312,6 +321,26 @@ export const siteConfig = {
   ] as Social[],
 
   /* ═════════════════════════════════════════════════════════════════════════
+   * 8b. SPONSORS
+   *
+   * Leave this EMPTY until sponsors have actually signed and have agreed to
+   * their logo being shown. While it is empty the logo strip does not render
+   * at all — there is no placeholder row, no greyed-out boxes and no invented
+   * names. A wall of fake logos is the fastest way to lose a real sponsor.
+   *
+   * When you have your first signed sponsor:
+   *   1. Put their logo in public/sponsors/
+   *   2. Add an entry below
+   *   3. Set flags.showSponsorLogos to true
+   *
+   * Both the entry and the flag are required, so logos can be staged and
+   * checked before they go live.
+   * ═════════════════════════════════════════════════════════════════════════ */
+  sponsors: [
+    // { name: "Their Company", logo: "/sponsors/their-company.svg", url: "https://example.com" },
+  ] as Sponsor[],
+
+  /* ═════════════════════════════════════════════════════════════════════════
    * 9. NAVIGATION
    *
    * The sticky bar that appears once you scroll past the hero.
@@ -525,14 +554,39 @@ export const siteConfig = {
           body: "Your mark travels with the campaign, sits on the stage backdrop and appears in the footage afterwards.",
         },
         {
+          /**
+           * ⚠️  VERIFY THIS WORDING WITH CHITNAVIS CENTRE BEFORE LAUNCH.
+           *
+           * This says the Centre is ORIGINATING the initiative, which is a
+           * stronger claim than "hosted at" or "in partnership with" — it
+           * makes a named institution the originator rather than the venue.
+           *
+           * If that is exactly the relationship, it is a real credibility
+           * asset and worth stating. If the Centre is the venue and partner
+           * rather than the originator, soften it — an institution seeing
+           * itself described as originating something it merely hosts is the
+           * kind of thing that damages the partnership.
+           *
+           * Safer alternative if in doubt:
+           *   "A civic cultural programme, in partnership with Chitnavis
+           *    Centre — not a nightclub promotion."
+           */
           title: "Association with a cultural initiative",
-          body: "A civic-minded, city-level music platform hosted at Chitnavis Centre — not a nightclub promotion.",
+          body: "A cultural initiative Chitnavis Centre is originating in Nagpur — a civic programme at a civic venue, not a nightclub promotion.",
         },
       ] as Point[],
-      /** Shown on the deck button when links.sponsorDeck is null. */
-      deckPendingLabel: "Request the sponsor deck",
+
+      /** Shown on the deck button once links.sponsorDeck has a path. */
       deckReadyLabel: "Download sponsor deck",
+      /** Shown on the deck button while links.sponsorDeck is null. */
+      deckPendingLabel: "Ask for the sponsor deck",
+      /** The reassuring line under the button while the deck does not exist. */
+      deckPendingNote:
+        "The deck is being finalised. Email us and it comes to you the moment it is ready.",
+
       contactCta: "Talk to the founder",
+      /** Prefilled subject line on the sponsor email link. */
+      emailSubject: "Sponsorship — Kool Kalakaars",
     },
 
     /* ─── FREE TICKET FORM ─────────────────────────────────────────────── */

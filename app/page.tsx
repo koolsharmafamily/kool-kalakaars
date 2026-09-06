@@ -6,12 +6,13 @@ import WhyNagpur from "@/components/sections/WhyNagpur";
 import Categories from "@/components/sections/Categories";
 import HowANightRuns from "@/components/sections/HowANightRuns";
 import Venue from "@/components/sections/Venue";
+import Sponsor from "@/components/sections/Sponsor";
 
 /**
  * THE PAGE
  * ========
- * Sections 1 to 6 are built. 7 to 9 are still placeholders and get replaced
- * next, in order: sponsor, free ticket form, apply to perform.
+ * Sections 1 to 7 are built. 8 and 9 are still placeholders: the free ticket
+ * form and apply to perform, both of which land with the forms step.
  *
  * The light/dark rhythm is deliberate and worth preserving as the remaining
  * sections land:
@@ -23,7 +24,7 @@ import Venue from "@/components/sections/Venue";
  *   04 Categories    violet     <- the loud one, all the photography
  *   05 The night     indigo
  *   06 Venue         ice        <- light, so the bright map belongs
- *   07 Sponsor       violet     (placeholder)
+ *   07 Sponsor       violet     <- torn edges, ice cards, the hard stop
  *   08 Tickets       ice        (placeholder)
  *   09 Perform       indigo     (placeholder)
  *
@@ -32,7 +33,7 @@ import Venue from "@/components/sections/Venue";
  */
 
 export default function Home() {
-  const { copy, nav } = siteConfig;
+  const { copy } = siteConfig;
 
   return (
     <>
@@ -68,24 +69,7 @@ export default function Home() {
 
       <Venue />
 
-      {/* ══ 07 · BECOME A SPONSOR ══════════════════════════════════════════ */}
-      <SectionPlaceholder
-        id="sponsor"
-        n="07"
-        eyebrow={copy.sponsor.eyebrow}
-        title={nav.primary.label}
-        note={copy.sponsor.lead}
-        tone="violet"
-      >
-        <ul className="mt-12 grid gap-6 md:grid-cols-3">
-          {copy.sponsor.benefits.map((b) => (
-            <li key={b.title} className="border-rule rounded-xl border p-6">
-              <h3 className="font-display text-d3">{b.title}</h3>
-              <p className="text-ink-muted mt-3">{b.body}</p>
-            </li>
-          ))}
-        </ul>
-      </SectionPlaceholder>
+      <Sponsor />
 
       {/* ══ 08 · FREE TICKET ═══════════════════════════════════════════════
           data-fab-avoid keeps the floating WhatsApp button off the form. */}
