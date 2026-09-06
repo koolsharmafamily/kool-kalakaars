@@ -1,16 +1,34 @@
 import siteConfig from "@/content/site.config";
 import SectionPlaceholder from "@/components/ui/SectionPlaceholder";
-import PopImage from "@/components/ui/PopImage";
 import Hero from "@/components/sections/Hero";
+import Idea from "@/components/sections/Idea";
+import WhyNagpur from "@/components/sections/WhyNagpur";
+import Categories from "@/components/sections/Categories";
+import HowANightRuns from "@/components/sections/HowANightRuns";
+import Venue from "@/components/sections/Venue";
 
 /**
- * THE SHELL
- * =========
- * Real sections replace these placeholders one at a time, starting with the
- * hero. The section order, the anchor ids and the light/dark rhythm are final.
+ * THE PAGE
+ * ========
+ * Sections 1 to 6 are built. 7 to 9 are still placeholders and get replaced
+ * next, in order: sponsor, free ticket form, apply to perform.
  *
- * The hero section (id="top") is what the sticky nav and the floating WhatsApp
- * button observe. Both stay hidden until the whole hero is scrolled past.
+ * The light/dark rhythm is deliberate and worth preserving as the remaining
+ * sections land:
+ *
+ *   01 Hero          indigo
+ *   02 The idea      ice        <- the quiet one, for the press
+ *   -- Press band    magenta
+ *   03 Why Nagpur    indigo
+ *   04 Categories    violet     <- the loud one, all the photography
+ *   05 The night     indigo
+ *   06 Venue         ice        <- light, so the bright map belongs
+ *   07 Sponsor       violet     (placeholder)
+ *   08 Tickets       ice        (placeholder)
+ *   09 Perform       indigo     (placeholder)
+ *
+ * The hero (id="top") is what the sticky nav and the floating WhatsApp button
+ * observe. Both stay hidden until the whole hero is scrolled past.
  */
 
 export default function Home() {
@@ -20,134 +38,40 @@ export default function Home() {
     <>
       <Hero />
 
-      {/* ══ 02 · THE IDEA ══════════════════════════════════════════════════ */}
-      <SectionPlaceholder
-        id="idea"
-        n="02"
-        eyebrow={copy.idea.eyebrow}
-        title={copy.idea.heading}
-        note={copy.idea.body}
-        tone="light"
-        minH="min-h-[50vh]"
-      />
+      <Idea />
 
-      {/* ══ 03 · SPONSORS AND PRESS BAND ═══════════════════════════════════
-          The compact band that serves audiences one and two early, without
-          reordering the page. */}
-      <section className="bg-brand text-ice scroll-mt-20 px-5 py-10 sm:px-8">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-5">
+      {/* ══ SPONSORS AND PRESS BAND ════════════════════════════════════════
+          Serves the two highest-priority audiences early, without reordering
+          the page around them. */}
+      <section className="bg-brand text-ice scroll-mt-24 px-5 py-12 sm:px-8">
+        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6">
           <div>
-            <h2 className="font-display text-d3">{copy.pressBand.heading}</h2>
-            <p className="mt-1 max-w-xl">{copy.pressBand.body}</p>
+            <h2 className="font-display text-d3 uppercase">
+              {copy.pressBand.heading}
+            </h2>
+            <p className="mt-2 max-w-xl">{copy.pressBand.body}</p>
           </div>
           <a
             href={copy.pressBand.cta.href}
-            className="bg-ice text-indigo inline-flex shrink-0 items-center rounded-full px-6 py-3 font-extrabold"
+            className="bg-ice text-indigo hover:bg-cta inline-flex shrink-0 items-center rounded-full px-6 py-3 font-extrabold transition-colors"
           >
             {copy.pressBand.cta.label}
           </a>
         </div>
       </section>
 
-      {/* ══ 04 · WHY NAGPUR ════════════════════════════════════════════════ */}
-      <SectionPlaceholder
-        id="why"
-        n="04"
-        eyebrow={copy.whyNagpur.eyebrow}
-        title={copy.whyNagpur.heading}
-        note="Three observational cards. No invented statistics."
-      >
-        <ul className="mt-12 grid gap-6 md:grid-cols-3">
-          {copy.whyNagpur.points.map((p) => (
-            <li
-              key={p.title}
-              className="border-rule rounded-xl border p-6"
-            >
-              <h3 className="font-display text-d3">{p.title}</h3>
-              <p className="text-ink-muted mt-3">{p.body}</p>
-            </li>
-          ))}
-        </ul>
-      </SectionPlaceholder>
+      <WhyNagpur />
 
-      {/* ══ 05 · THE CATEGORIES ════════════════════════════════════════════
-          Also the PopImage proving ground — three treatments side by side. */}
-      <SectionPlaceholder
-        id="categories"
-        n="05"
-        eyebrow={copy.categories.eyebrow}
-        title={copy.categories.heading}
-        note="Pinned horizontal track on desktop, scroll-snap carousel on mobile. The images below show PopImage running with no photography yet."
-        tone="violet"
-      >
-        <ul className="mt-12 grid gap-8 md:grid-cols-3">
-          {copy.categories.items.map((c, i) => (
-            <li key={c.name}>
-              <PopImage
-                src={c.image}
-                alt={c.imageAlt}
-                width={640}
-                height={800}
-                duotone={i === 1 ? "violetAcid" : "indigoMagenta"}
-                halftone={i === 2 ? "medium" : "soft"}
-                shape={i === 1 ? "torn" : "angled"}
-                sticker={i === 0 ? "ice" : i === 1 ? "acid" : "magenta"}
-                misregister={i === 2 ? 3 : 0}
-                rotate={i === 0 ? -1.5 : i === 2 ? 1.5 : 0}
-                sizes="(max-width: 768px) 100vw, 33vw"
-              />
-              <h3 className="font-display text-d3 mt-6">
-                {c.name}{" "}
-                <span className="text-cta">[{c.qualifier}]</span>
-              </h3>
-              <p className="text-ink-muted mt-2">{c.blurb}</p>
-            </li>
-          ))}
-        </ul>
-      </SectionPlaceholder>
+      <Categories />
 
-      {/* ══ 06 · HOW A NIGHT RUNS ══════════════════════════════════════════ */}
-      <SectionPlaceholder
-        id="format"
-        n="06"
-        eyebrow={copy.format.eyebrow}
-        title={copy.format.heading}
-        note="Five numbered steps, scroll-linked reveal."
-      >
-        <ol className="mt-12 space-y-8">
-          {copy.format.steps.map((s, i) => (
-            <li key={s.title} className="flex gap-6">
-              <span className="font-display text-d2 text-cta leading-none">
-                {String(i + 1).padStart(2, "0")}
-              </span>
-              <div>
-                <h3 className="font-display text-d3">{s.title}</h3>
-                <p className="text-ink-muted mt-2 max-w-2xl">{s.body}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-      </SectionPlaceholder>
+      <HowANightRuns />
 
-      {/* ══ 07 · THE VENUE ═════════════════════════════════════════════════ */}
-      <SectionPlaceholder
-        id="venue"
-        n="07"
-        eyebrow={copy.venue.eyebrow}
-        title={copy.venue.heading}
-        note={siteConfig.venue.note}
-        tone="light"
-      >
-        <div className="border-ink-dark/20 mt-10 aspect-[16/9] w-full max-w-3xl rounded-xl border-2 border-dashed" />
-        <p className="text-ink-muted-dark text-small mt-3">
-          Map iframe slot · dimensions reserved so it cannot shift the layout
-        </p>
-      </SectionPlaceholder>
+      <Venue />
 
-      {/* ══ 08 · BECOME A SPONSOR ══════════════════════════════════════════ */}
+      {/* ══ 07 · BECOME A SPONSOR ══════════════════════════════════════════ */}
       <SectionPlaceholder
         id="sponsor"
-        n="08"
+        n="07"
         eyebrow={copy.sponsor.eyebrow}
         title={nav.primary.label}
         note={copy.sponsor.lead}
@@ -163,11 +87,11 @@ export default function Home() {
         </ul>
       </SectionPlaceholder>
 
-      {/* ══ 09 · FREE TICKET ═══════════════════════════════════════════════
+      {/* ══ 08 · FREE TICKET ═══════════════════════════════════════════════
           data-fab-avoid keeps the floating WhatsApp button off the form. */}
       <SectionPlaceholder
         id="tickets"
-        n="09"
+        n="08"
         eyebrow={copy.tickets.eyebrow}
         title={copy.tickets.heading}
         note={copy.tickets.lead}
@@ -183,16 +107,13 @@ export default function Home() {
               <div className="border-ink-dark/25 mt-1 h-12 rounded-lg border" />
             </div>
           ))}
-          <p className="text-micro text-ink-muted-dark pt-2">
-            Marked data-fab-avoid — the WhatsApp button retreats here.
-          </p>
         </div>
       </SectionPlaceholder>
 
-      {/* ══ 10 · APPLY TO PERFORM ══════════════════════════════════════════ */}
+      {/* ══ 09 · APPLY TO PERFORM ══════════════════════════════════════════ */}
       <SectionPlaceholder
         id="perform"
-        n="10"
+        n="09"
         eyebrow={copy.perform.eyebrow}
         title={copy.perform.heading}
         note={copy.perform.lead}
@@ -212,12 +133,12 @@ export default function Home() {
         </ul>
       </SectionPlaceholder>
 
-      {/* ══ 11 · COMMUNITY ═════════════════════════════════════════════════
+      {/* ══ 10 · COMMUNITY ═════════════════════════════════════════════════
           Hidden entirely while the invite link is null — which it is. */}
       {siteConfig.links.whatsappCommunity ? (
         <SectionPlaceholder
           id="community"
-          n="11"
+          n="10"
           eyebrow={copy.community.eyebrow}
           title={copy.community.heading}
           note={copy.community.body}

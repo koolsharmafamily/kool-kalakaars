@@ -339,7 +339,22 @@ export const siteConfig = {
   /* ═════════════════════════════════════════════════════════════════════════
    * 10. THE WORDS
    *
-   * Everything below is the actual copy on the page. Rewrite freely.
+   *  ⚠️  ALL COPY BELOW IS PLACEHOLDER. WRITTEN TO BE REPLACED.
+   *
+   *  It is here so the layout can be judged at the right length and in
+   *  roughly the right voice. None of it is final, none of it was approved
+   *  by anyone, and every line is yours to rewrite.
+   *
+   *  Each block is tagged with the length it was written to. If you keep
+   *  roughly to that, the design will hold together. If you go much longer
+   *  or much shorter, tell whoever is building the site so the spacing can
+   *  be adjusted.
+   *
+   *  Fields marked  [PLACEHOLDER]  are invented prose.
+   *  Fields marked  [FACTUAL]      are real details — the venue address, the
+   *                                three categories, how the night runs.
+   *                                Correct them if they are wrong, but they
+   *                                are not made up.
    *
    * A note on Hindi: the site is in English. Devanagari and Hinglish appear
    * only as flavour above headings and on one or two buttons, never for
@@ -359,8 +374,12 @@ export const siteConfig = {
     },
 
     /* ─── THE IDEA ─────────────────────────────────────────────────────────
-     * This is the paragraph a journalist will copy and paste. Keep it under
-     * 40 words, plain, and free of adjectives. It is currently 32 words.
+     * [PLACEHOLDER] — but the closest thing here to a finished sentence.
+     *
+     * This is the paragraph a journalist copies and pastes, so it has to be
+     * plain, factual and free of adjectives. UNDER 40 WORDS. Currently 32.
+     *
+     * If you change nothing else in this file, get this paragraph right.
      * ─────────────────────────────────────────────────────────────────── */
     idea: {
       eyebrow: "सुनो",
@@ -368,7 +387,8 @@ export const siteConfig = {
       body: "Kool Kalakaars is a recurring live music competition and open mic in Nagpur. Three categories — open mic vocals, band showcase, solo instrumental. Free to attend, open to apply, hosted at Chitnavis Centre.",
     },
 
-    /* ─── SPONSORS AND PRESS BAND ──────────────────────────────────────── */
+    /* ─── SPONSORS AND PRESS BAND ──────────────────────────────────────────
+     * [PLACEHOLDER] — heading 3-5 words, body one line under 20 words. */
     pressBand: {
       heading: "For sponsors and press",
       body: "Brand partnerships, press enquiries and interview requests go straight to the founder.",
@@ -376,7 +396,14 @@ export const siteConfig = {
     },
 
     /* ─── WHY NAGPUR ───────────────────────────────────────────────────────
-     * Observational only. Never add a number here unless it can be sourced.
+     * [PLACEHOLDER] — three points, title 3-5 words, body 15-25 words.
+     *
+     * OBSERVATIONAL ONLY. There is not a single number in here and there
+     * must not be one. "Nagpur has 400 working musicians" would be invented,
+     * and a sponsor who checks it and finds nothing behind it stops trusting
+     * everything else on the page. Say what anyone in the city can see for
+     * themselves. If you later have a real, sourced figure, add it with the
+     * source next to it.
      * ─────────────────────────────────────────────────────────────────── */
     whyNagpur: {
       eyebrow: "क्यों",
@@ -397,7 +424,17 @@ export const siteConfig = {
       ] as Point[],
     },
 
-    /* ─── THE THREE CATEGORIES ─────────────────────────────────────────── */
+    /* ─── THE THREE CATEGORIES ─────────────────────────────────────────────
+     * Category names and qualifiers: [FACTUAL]
+     * Blurbs: [PLACEHOLDER] — one line each, aim for 8-14 words.
+     *
+     * The images are licensed stock, deliberately tight detail crops with no
+     * faces in them, processed to greyscale and coloured by PopImage so none
+     * of it reads as raw stock. Sources and credits: docs/IMAGE_CREDITS.md
+     *
+     * To swap in real photos after the first event: drop the files into
+     * public/images and change the paths here. Nothing else needs touching.
+     * ─────────────────────────────────────────────────────────────────── */
     categories: {
       eyebrow: "तीन रास्ते",
       heading: "Three ways up",
@@ -406,27 +443,33 @@ export const siteConfig = {
           name: "Open Mic",
           qualifier: "Vocals",
           blurb: "One voice, one song, one shot. Backing track or live accompaniment.",
-          image: null,
-          imageAlt: "Close crop of a hand around a vocal microphone",
+          image: "/images/open-mic.webp",
+          imageAlt:
+            "A stage microphone in close-up, stage lights thrown out of focus behind it",
         },
         {
           name: "Band Showcase",
           qualifier: "Full lineup",
           blurb: "Bring the whole group. Originals and covers both welcome.",
-          image: null,
-          imageAlt: "Detail of an electric guitar under stage light",
+          image: "/images/band.webp",
+          imageAlt: "Macro detail of the strings and pickups of an electric guitar",
         },
         {
           name: "Solo Instrumental",
           qualifier: "Any instrument",
           blurb: "Tabla to telecaster, sitar to synth. Play the thing you actually play.",
-          image: null,
-          imageAlt: "Hands mid-strike on tabla",
+          image: "/images/solo-instrumental.webp",
+          imageAlt: "A hand mid-strike on the skin of a tabla",
         },
       ] as Category[],
     },
 
-    /* ─── HOW A NIGHT RUNS ─────────────────────────────────────────────── */
+    /* ─── HOW A NIGHT RUNS ─────────────────────────────────────────────────
+     * Step titles: [FACTUAL] — this is genuinely the plan.
+     * Step bodies: [PLACEHOLDER] — 15-25 words each.
+     *
+     * Do not promise anything here you are not certain you can deliver on the
+     * night. Sponsors and performers will both read this as a commitment. */
     format: {
       eyebrow: "रात कैसे चलती है",
       heading: "How a night runs",
@@ -454,14 +497,19 @@ export const siteConfig = {
       ] as Step[],
     },
 
-    /* ─── VENUE ────────────────────────────────────────────────────────── */
+    /* ─── VENUE ────────────────────────────────────────────────────────────
+     * Heading and eyebrow: [PLACEHOLDER]. The address itself is [FACTUAL]
+     * and lives further up this file under . */
     venue: {
       eyebrow: "जगह",
       heading: "The venue",
     },
 
     /* ─── SPONSOR ──────────────────────────────────────────────────────────
-     * The most important section on the site for the primary audience.
+     * [PLACEHOLDER] — lead under 30 words, three benefits at 15-25 words.
+     *
+     * The most important section on the site for the primary audience. Worth
+     * more of your attention than anything except the idea paragraph.
      * ─────────────────────────────────────────────────────────────────── */
     sponsor: {
       eyebrow: "साथ चलो",
