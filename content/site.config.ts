@@ -319,16 +319,21 @@ export const siteConfig = {
    * button, on phones as well as desktop — it is never hidden inside a menu.
    * ═════════════════════════════════════════════════════════════════════════ */
   nav: {
+    /**
+     * Deliberately short. A nav with four things in it gets used; a nav with
+     * nine gets ignored. Everything else on the page is reachable by scrolling.
+     */
     items: [
-      { label: "The idea", href: "#idea" },
-      { label: "Categories", href: "#categories" },
-      { label: "The night", href: "#format" },
+      { label: "The Format", href: "#format" },
       { label: "Venue", href: "#venue" },
-      { label: "Tickets", href: "#tickets" },
-      { label: "Perform", href: "#perform" },
+      { label: "Free Ticket", href: "#tickets" },
     ],
-    /** The always-visible primary action. */
-    primary: { label: "Become a sponsor", href: "#sponsor" },
+    /**
+     * The single highest-priority action on the whole site.
+     * Rendered as a filled button, separate from the list above, and visible
+     * on phones as well as desktop — it is NEVER folded into the menu.
+     */
+    primary: { label: "Become a Sponsor", href: "#sponsor" },
   },
 
   /* ═════════════════════════════════════════════════════════════════════════

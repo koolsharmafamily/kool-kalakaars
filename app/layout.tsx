@@ -1,6 +1,9 @@
 import type { Metadata, Viewport } from "next";
 import { fontVariables } from "@/lib/fonts";
 import siteConfig from "@/content/site.config";
+import StickyNav from "@/components/layout/StickyNav";
+import Footer from "@/components/layout/Footer";
+import WhatsAppFab from "@/components/ui/WhatsAppFab";
 import "./globals.css";
 
 /**
@@ -26,7 +29,18 @@ export default function RootLayout({
   return (
     <html lang="en" className={fontVariables}>
       <body className="bg-surface text-ink font-body antialiased">
-        {children}
+        {/* Keyboard users get past the nav in one keystroke. */}
+        <a
+          href="#main"
+          className="bg-cta text-cta-ink sr-only rounded-full px-5 py-3 font-bold focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[60]"
+        >
+          Skip to content
+        </a>
+
+        <StickyNav />
+        <main id="main">{children}</main>
+        <Footer />
+        <WhatsAppFab />
       </body>
     </html>
   );
