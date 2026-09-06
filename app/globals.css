@@ -85,6 +85,15 @@
      size-adjusted fallback metrics, but the match is imperfect for a face
      as condensed as Anton at 13vw — pinning line-height means a font swap
      changes glyph shapes without ever changing box height. Zero CLS.       */
+  /* The event name in the hero, and nothing else. Set deliberately larger
+     than --text-hero because 13vw on a 360px phone is only 47px, which the
+     3.25rem floor then overrides anyway — the result is timid on exactly the
+     device most of this audience is holding. 19vw gives ~68px at 360px, so
+     KALAKAARS fills the line edge to edge the way a poster should. */
+  --text-name: clamp(4rem, 19vw, 11rem);
+  --text-name--line-height: 0.82;
+  --text-name--letter-spacing: -0.03em;
+
   --text-hero: clamp(3.25rem, 13vw, 9rem);
   --text-hero--line-height: 0.86;
   --text-hero--letter-spacing: -0.02em;
@@ -182,5 +191,66 @@
     text-shadow:
       2px 0 0 var(--color-magenta),
       -2px 0 0 var(--color-highlight);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   HERO BACKDROP — the placeholder that stands in for the Runway video.
+   ───────────────────────────────────────────────────────────────────────────
+   Soft colour fields drifting past each other. TRANSFORM ONLY: no gradient
+   stop, background-position, width, filter or opacity is ever animated, so
+   every frame is a GPU composite and nothing repaints. The gradients
+   themselves are painted once and never touched again.
+
+   Each blob is a radial-gradient that fades to transparent, so no blur()
+   filter is needed — blur on a full-screen layer is one of the most reliable
+   ways to drop frames on a mid-range Android.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@keyframes kk-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(8%, -6%, 0) scale(1.18);
+  }
+}
+
+@keyframes kk-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.1);
+  }
+  50% {
+    transform: translate3d(-10%, 5%, 0) scale(0.92);
+  }
+}
+
+@keyframes kk-drift-c {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(0.95);
+  }
+  50% {
+    transform: translate3d(5%, 8%, 0) scale(1.15);
+  }
+}
+
+@layer components {
+  .kk-blob {
+    position: absolute;
+    border-radius: 9999px;
+    will-change: transform;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+  }
+
+  /* Reduced motion freezes the backdrop completely. The composition still
+     reads as a pop-art field — it simply stops moving. */
+  @media (prefers-reduced-motion: reduce) {
+    .kk-blob {
+      animation: none !important;
+    }
   }
 }

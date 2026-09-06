@@ -1,6 +1,7 @@
 import siteConfig from "@/content/site.config";
 import SectionPlaceholder from "@/components/ui/SectionPlaceholder";
 import PopImage from "@/components/ui/PopImage";
+import Hero from "@/components/sections/Hero";
 
 /**
  * THE SHELL
@@ -17,69 +18,7 @@ export default function Home() {
 
   return (
     <>
-      {/* ══ 01 · HERO ═══════════════════════════════════════════════════════
-          Placeholder. Real hero — video, countdown, two CTAs — is next. */}
-      <section
-        id="top"
-        className="bg-surface relative grid min-h-[100svh] place-items-center overflow-hidden px-5 py-24"
-      >
-        {/* Animated pop-art gradient stands in for the Runway video. */}
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 opacity-70"
-          style={{
-            background:
-              "radial-gradient(120% 90% at 15% 10%, var(--color-violet) 0%, transparent 55%)," +
-              "radial-gradient(110% 80% at 85% 20%, var(--color-magenta) 0%, transparent 50%)," +
-              "radial-gradient(130% 100% at 50% 100%, var(--color-indigo) 20%, transparent 70%)",
-          }}
-        />
-        <div
-          aria-hidden="true"
-          className="halftone-lg text-cta absolute inset-0 opacity-[0.07]"
-        />
-
-        <div className="relative w-full max-w-5xl text-center">
-          {/* Logo slot. Sized for a horizontal lockup so nothing moves when
-              the real logo arrives. */}
-          <div className="border-cta/40 text-cta/70 text-micro mx-auto mb-10 grid h-20 w-80 max-w-full place-items-center rounded-lg border-2 border-dashed font-bold uppercase">
-            Logo slot · 320 × 80
-          </div>
-
-          <p className="text-eyebrow text-cta font-bold uppercase">
-            {copy.hero.eyebrow}
-          </p>
-
-          <h1 className="font-display text-hero mt-6">{siteConfig.site.name}</h1>
-
-          <p className="text-lead text-ink-muted mx-auto mt-6 max-w-xl">
-            {siteConfig.site.tagline}
-          </p>
-
-          <p className="text-eyebrow text-ink mt-10 font-bold uppercase">
-            {siteConfig.event.dateTbcLabel}
-          </p>
-
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
-            <a
-              href={copy.hero.primaryCta.href}
-              className="bg-cta text-cta-ink hover:bg-brand hover:text-ice inline-flex items-center rounded-full border-2 border-transparent px-8 py-4 text-lg font-extrabold transition-colors"
-            >
-              {copy.hero.primaryCta.label}
-            </a>
-            <a
-              href={copy.hero.secondaryCta.href}
-              className="border-ice text-ink hover:bg-ice hover:text-indigo inline-flex items-center rounded-full border-2 px-8 py-4 text-lg font-extrabold transition-colors"
-            >
-              {copy.hero.secondaryCta.label}
-            </a>
-          </div>
-
-          <p className="text-small text-ink-muted mt-5">
-            {copy.hero.footnote}
-          </p>
-        </div>
-      </section>
+      <Hero />
 
       {/* ══ 02 · THE IDEA ══════════════════════════════════════════════════ */}
       <SectionPlaceholder
