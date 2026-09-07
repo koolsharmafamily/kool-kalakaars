@@ -168,14 +168,16 @@ component, no form, no styling — needs touching.
 
 In an environment variable, not in the code:
 
-
+```
+TICKET_ENDPOINT_URL=https://script.google.com/macros/s/.../exec
+```
 
 Set it in Vercel under **Settings → Environment Variables**, for both
 Production and Preview.
 
 It is kept out of the repository because this repository is public and this is
 a write endpoint — anyone who finds the URL can post to it directly, skipping
-the protections in . Those protections are a hidden honeypot
+the protections in `/api/ticket`. Those protections are a hidden honeypot
 field, a minimum fill time, and per-IP rate limiting.
 
 To change the endpoint later, edit the environment variable and redeploy. No
