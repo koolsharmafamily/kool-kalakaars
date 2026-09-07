@@ -10,3 +10,8 @@ npm-debug.log*
 next-env.d.ts
 tsconfig.tsbuildinfo
 lighthouse/
+
+# Raw source artwork (~44 MB). Not needed to build — the encoded output in
+# public/hero is committed. Keep the originals in your own storage; point
+# scripts/prepare-hero.mjs at them when you want to re-encode.
+Images/

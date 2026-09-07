@@ -127,7 +127,7 @@ async function run() {
        image is NOT the LCP element — Chrome excludes it as low-entropy — so
        every kilobyte it saves is a kilobyte the headline gets sooner. */
     const avif = await base.clone().avif({ quality: 20, effort: 9 }).toBuffer();
-    const webp = await base.clone().webp({ quality: 68, effort: 6 }).toBuffer();
+    const webp = await base.clone().webp({ quality: 34, effort: 6 }).toBuffer();
 
     await writeFile(join(OUT, `${enc.name}.avif`), avif);
     await writeFile(join(OUT, `${enc.name}.webp`), webp);

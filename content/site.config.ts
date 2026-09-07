@@ -144,10 +144,10 @@ export const siteConfig = {
 
     /**
      * The website address, with no slash at the end.
-     * TODO: replace with the real domain once it is registered.
+     * The live domain.
      * Used for Google search results, sharing previews and the sitemap.
      */
-    url: "https://koolkalakaars.com",
+    url: "https://koolkalakaars.in",
 
     /** One line, shown under the name in the hero. */
     tagline: "The stage Nagpur musicians have been waiting for.",
