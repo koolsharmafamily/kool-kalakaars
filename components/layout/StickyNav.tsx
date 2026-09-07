@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
-import siteConfig from "@/content/site.config";
 import { useScrolledPast } from "@/lib/hooks/useSentinel";
 
 /**
@@ -37,7 +36,33 @@ import { useScrolledPast } from "@/lib/hooks/useSentinel";
  * 56px tall. The toggle itself is bottom-right, the easiest place to reach.
  */
 
-export function StickyNav() {
+type NavProps = {
+  items: ReadonlyArray<{ label: string; href: string }>;
+  primary: { label: string; href: string };
+  siteName: string;
+  logo: string | null;
+  logoWidth: number;
+  logoHeight: number;
+  phoneDisplay: string;
+  phoneE164: string;
+  email: string;
+};
+
+/**
+ * Everything it needs arrives as props. Importing the config module here
+ * shipped all 40 KB of site copy to the browser to supply a four-item menu.
+ */
+export function StickyNav({
+  items,
+  primary,
+  siteName,
+  logo,
+  logoWidth,
+  logoHeight,
+  phoneDisplay,
+  phoneE164,
+  email,
+}: NavProps) {
   const past = useScrolledPast("top");
   const [open, setOpen] = useState(false);
   const panelId = useId();
@@ -80,8 +105,6 @@ export function StickyNav() {
   // control that is not visible.
   const hidden = !past;
 
-  const { nav, site, media } = siteConfig;
-
   return (
     <header
       className={[
@@ -110,18 +133,18 @@ export function StickyNav() {
           href="#top"
           className="font-display text-ink shrink-0 text-xl leading-none tracking-tight sm:text-2xl"
         >
-          {media.logo ? (
+          {logo ? (
             // eslint-disable-next-line @next/next/no-img-element
             <img
-              src={media.logo}
-              alt={site.name}
-              width={media.logoWidth}
-              height={media.logoHeight}
+              src={logo}
+              alt={siteName}
+              width={logoWidth}
+              height={logoHeight}
               className="h-7 w-auto sm:h-8"
             />
           ) : (
             <>
-              <span className="sr-only">{site.name}</span>
+              <span className="sr-only">{siteName}</span>
               <span aria-hidden="true">
                 KOOL<span className="text-cta">·</span>K
               </span>
@@ -131,7 +154,7 @@ export function StickyNav() {
 
         {/* ── DESKTOP LINKS ───────────────────────────────────────────────  */}
         <ul className="ml-6 hidden items-center gap-7 md:flex">
-          {nav.items.map((item) => (
+          {items.map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
@@ -150,11 +173,11 @@ export function StickyNav() {
               shortens below 400px so it survives a 320px screen without
               wrapping or pushing the toggle off the edge. */}
           <Link
-            href={nav.primary.href}
+            href={primary.href}
             className="bg-cta text-cta-ink hover:bg-brand hover:text-ice inline-flex items-center rounded-full px-4 py-2.5 text-sm font-extrabold whitespace-nowrap transition-colors sm:px-5"
           >
             <span className="hidden min-[400px]:inline">
-              {nav.primary.label}
+              {primary.label}
             </span>
             <span className="min-[400px]:hidden">Sponsor</span>
           </Link>
@@ -222,7 +245,7 @@ export function StickyNav() {
         inert={!open}
       >
         <ul className="px-4 py-2">
-          {siteConfig.nav.items.map((item) => (
+          {items.map((item) => (
             <li key={item.href}>
               <Link
                 href={item.href}
@@ -237,16 +260,16 @@ export function StickyNav() {
 
         <div className="border-rule border-t px-4 py-4">
           <a
-            href={`tel:+${siteConfig.contact.phoneE164}`}
+            href={`tel:+${phoneE164}`}
             className="text-ink-muted text-small block font-bold"
           >
-            {siteConfig.contact.phoneDisplay}
+            {phoneDisplay}
           </a>
           <a
-            href={`mailto:${siteConfig.contact.email}`}
+            href={`mailto:${email}`}
             className="text-ink-muted text-small mt-1 block break-all font-bold"
           >
-            {siteConfig.contact.email}
+            {email}
           </a>
         </div>
       </div>

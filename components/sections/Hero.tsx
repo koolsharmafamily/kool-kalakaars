@@ -21,7 +21,7 @@ import HeroBackdrop from "@/components/sections/HeroBackdrop";
  */
 
 export function Hero() {
-  const { site, copy, media } = siteConfig;
+  const { site, copy, media, event } = siteConfig;
 
   return (
     <section
@@ -97,7 +97,7 @@ export function Hero() {
             visitor, and within the counting state the digit boxes are a fixed
             width (9 renders as 09) so ticking never reflows. Reserving space
             for the tallest state would just punch a hole in the other three. */}
-        <Countdown className="kk-hero-item mt-10" style={{ ["--kk-delay"]: "340ms" } as React.CSSProperties} />
+        <Countdown event={event} className="kk-hero-item mt-10" style={{ ["--kk-delay"]: "340ms" } as React.CSSProperties} />
 
         {/* ── THE TWO ACTIONS ─────────────────────────────────────────────
             Full-width stacked on a phone so both are easy thumb targets;

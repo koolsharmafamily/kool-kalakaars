@@ -121,9 +121,12 @@ async function run() {
 
     const base = pipeline.resize(enc.width, enc.height, { fit: "cover" });
 
-    // AVIF first — it is what modern phones will actually download — with a
-    // WebP alongside for anything that cannot take it.
-    const avif = await base.clone().avif({ quality: 30, effort: 9 }).toBuffer();
+    /* AVIF quality is deliberately low. The artwork sits under a 71% indigo
+       scrim, so compression detail is invisible to the visitor, while the
+       bytes compete directly with the fonts the LCP text is waiting on. This
+       image is NOT the LCP element — Chrome excludes it as low-entropy — so
+       every kilobyte it saves is a kilobyte the headline gets sooner. */
+    const avif = await base.clone().avif({ quality: 20, effort: 9 }).toBuffer();
     const webp = await base.clone().webp({ quality: 68, effort: 6 }).toBuffer();
 
     await writeFile(join(OUT, `${enc.name}.avif`), avif);

@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import siteConfig from "@/content/site.config";
 
 /**
  * HERO MEDIA
@@ -82,8 +81,22 @@ function videoAllowed(): boolean {
   return true;
 }
 
-export function HeroMedia() {
-  const { media } = siteConfig;
+type HeroImage = {
+  mobileAvif: string;
+  mobileWebp: string;
+  desktopAvif: string;
+  desktopWebp: string;
+  alt: string;
+};
+
+type MediaConfig = {
+  heroVideoDesktop: string | null;
+  heroVideoMobile: string | null;
+  heroImage: HeroImage | null;
+};
+
+/** Takes the media block as a prop; see the note in Countdown for why. */
+export function HeroMedia({ media }: { media: MediaConfig }) {
   const image = media.heroImage;
   const hasVideo = Boolean(media.heroVideoDesktop || media.heroVideoMobile);
 

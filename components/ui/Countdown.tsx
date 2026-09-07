@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import siteConfig from "@/content/site.config";
 import {
   getCountdownState,
   formatEventDate,
@@ -61,14 +60,26 @@ function Digits({ value }: { value: number | null }) {
   );
 }
 
+type EventConfig = {
+  startsAt: string | null;
+  dateTbcLabel: string;
+  postEventMessage: string;
+  recurrence: string;
+};
+
+/**
+ * Takes the event block as a prop rather than importing the config, so the
+ * client bundle carries four strings instead of the whole site copy.
+ */
 export function Countdown({
+  event,
   className = "",
   style,
 }: {
+  event: EventConfig;
   className?: string;
   style?: React.CSSProperties;
 }) {
-  const { event } = siteConfig;
 
   // Computed once on the server (never "counting"), then re-derived on the
   // client every second.

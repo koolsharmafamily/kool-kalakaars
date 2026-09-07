@@ -73,7 +73,27 @@ export const notoDevanagari = localFont({
   src: "../app/fonts/noto-devanagari-subset.woff2",
   weight: "400 700",
   style: "normal",
-  display: "swap",
+
+  /**
+   * `optional`, not `swap`.
+   *
+   * With `swap` this font sat on the critical path to the largest paint even
+   * after subsetting, and nothing in the hero uses it — every Devanagari word
+   * on the site is an eyebrow below the fold. `optional` tells the browser it
+   * may render the fallback and carry on rather than waiting.
+   *
+   * There is no tofu risk. The stack falls through to `system-ui`, and every
+   * device this site targets — Android, iOS, Windows — ships a Devanagari
+   * face. Worst case on a cold first load, the ten Hindi eyebrow words render
+   * in the system Devanagari rather than Noto; on any subsequent visit the
+   * font is cached and Noto is used.
+   *
+   * That is a fair trade for decorative flavour text. It would NOT be a fair
+   * trade for anything load-bearing, which is exactly why the brief keeps
+   * Hindi off navigation labels, form labels, prices and dates.
+   */
+  display: "optional",
+
   variable: "--font-noto-dev",
   preload: false,
 });

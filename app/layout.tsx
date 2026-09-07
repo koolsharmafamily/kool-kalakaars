@@ -45,10 +45,23 @@ export default function RootLayout({
           Skip to content
         </a>
 
-        <StickyNav />
+        <StickyNav
+          items={siteConfig.nav.items}
+          primary={siteConfig.nav.primary}
+          siteName={siteConfig.site.name}
+          logo={siteConfig.media.logo}
+          logoWidth={siteConfig.media.logoWidth}
+          logoHeight={siteConfig.media.logoHeight}
+          phoneDisplay={siteConfig.contact.phoneDisplay}
+          phoneE164={siteConfig.contact.phoneE164}
+          email={siteConfig.contact.email}
+        />
         <main id="main">{children}</main>
         <Footer />
-        <WhatsAppFab />
+        <WhatsAppFab
+          href={siteConfig.links.whatsappChat}
+          label={`Message ${siteConfig.site.name} on WhatsApp`}
+        />
       </body>
     </html>
   );

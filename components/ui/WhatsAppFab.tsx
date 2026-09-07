@@ -1,6 +1,5 @@
 "use client";
 
-import siteConfig from "@/content/site.config";
 import { useScrolledPast, useFabAvoidance } from "@/lib/hooks/useSentinel";
 
 /**
@@ -23,7 +22,12 @@ import { useScrolledPast, useFabAvoidance } from "@/lib/hooks/useSentinel";
  * they cannot see.
  */
 
-export function WhatsAppFab() {
+/**
+ * Props rather than a config import: this is a client component, and
+ * importing the config module here pulled all 40 KB of site copy into the
+ * browser bundle to supply one URL.
+ */
+export function WhatsAppFab({ href, label }: { href: string; label: string }) {
   const past = useScrolledPast("top");
   const avoiding = useFabAvoidance();
 
@@ -31,10 +35,10 @@ export function WhatsAppFab() {
 
   return (
     <a
-      href={siteConfig.links.whatsappChat}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
-      aria-label={`Message ${siteConfig.site.name} on WhatsApp`}
+      aria-label={label}
       aria-hidden={!visible}
       tabIndex={visible ? 0 : -1}
       className={[

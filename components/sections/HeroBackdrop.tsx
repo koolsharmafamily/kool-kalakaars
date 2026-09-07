@@ -105,7 +105,7 @@ export function HeroBackdrop() {
           the connection and motion preference allow, and owns the scrim —
           which differs between the two because a video frame cannot be
           inspected in advance but an image can. */}
-      <HeroMedia />
+      <HeroMedia media={media} />
 
       {/* ── 3. ABOVE-SCRIM ACCENTS ────────────────────────────────────────
           Full strength, and kept to the corners so they never sit behind
