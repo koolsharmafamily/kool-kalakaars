@@ -78,6 +78,22 @@ export type FormFieldPreview = {
   label: string;
   /** Optional clarifying note shown underneath. */
   hint?: string;
+  /** True when the form does not require an answer. */
+  optional?: boolean;
+};
+
+export type LegalPage = {
+  /** Page heading, also used as the browser tab title. */
+  title: string;
+  /**
+   * The content, one string per paragraph.
+   *
+   * While this array is EMPTY the page is treated as unpublished: it is
+   * hidden from the footer, left out of the sitemap, marked noindex, and
+   * shows a short "being written" message instead. Add paragraphs and it
+   * publishes itself — no other file needs changing.
+   */
+  body: string[];
 };
 
 export type Sponsor = {
@@ -245,11 +261,42 @@ export const siteConfig = {
    * ═════════════════════════════════════════════════════════════════════════ */
   links: {
     /**
-     * TODO: the Google Form for performer applications.
-     * Opens in a new tab. While this is null, the Apply section shows a
-     * WhatsApp button instead of a broken link.
+     * The Google Form for performer applications. Opens in a new tab.
+     *
+     * It is deliberately NOT embedded in the page. The form accepts a file
+     * upload, which needs a Google sign-in on Google's own domain, and an
+     * embedded upload widget behaves badly on mobile. So the site previews
+     * what the form asks and then hands people over to Google.
+     *
+     * If this is ever set back to null, the Apply section falls back to a
+     * WhatsApp button rather than showing a broken link.
      */
-    performerForm: null as string | null,
+    performerForm:
+      "https://docs.google.com/forms/d/e/1FAIpQLScjy7JuspEBy-CBfKeg78gzSkNj4K0xI3Kn42Ns2c8FEOy1cg/viewform" as
+        | string
+        | null,
+
+    /**
+     * Where free-ticket requests are sent. This is a Google Apps Script web
+     * app that writes a row into a Google Sheet.
+     *
+     * The browser never calls this directly — it posts to /api/ticket on our
+     * own site, which forwards it here. That avoids the CORS problems Apps
+     * Script is prone to, keeps the URL out of the public page source, and
+     * lets us check the reply properly before telling anyone their seat is
+     * booked.
+     *
+     * ⚠️  Setting this alone is NOT enough. The script itself must contain a
+     * doPost function. As of the last check it does not — see
+     * docs/APPS_SCRIPT.md for the code to paste in and how to redeploy.
+     *
+     * You can also override this with a TICKET_ENDPOINT_URL environment
+     * variable, which takes precedence and keeps the URL off the site.
+     */
+    ticketEndpoint:
+      "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec" as
+        | string
+        | null,
 
     /**
      * TODO: the WhatsApp community invite link (looks like
@@ -339,6 +386,46 @@ export const siteConfig = {
   sponsors: [
     // { name: "Their Company", logo: "/sponsors/their-company.svg", url: "https://example.com" },
   ] as Sponsor[],
+
+  /* ═════════════════════════════════════════════════════════════════════════
+   * 8c. THE LEGAL PAGES
+   *
+   * Three pages that exist but are NOT published yet.
+   *
+   * While a page's `body` list is empty:
+   *   · it does not appear in the footer
+   *   · it is left out of sitemap.xml
+   *   · it is marked "do not index" for Google
+   *   · visiting it directly shows a short "being written" note, not a 404
+   *
+   * To publish one, add paragraphs to its `body`. That is the only step —
+   * the footer link, the sitemap entry and the search-engine permission all
+   * switch on by themselves.
+   *
+   *   body: [
+   *     "First paragraph.",
+   *     "Second paragraph.",
+   *   ],
+   *
+   * ⚠️  The privacy page matters more than the other two. The free-ticket form
+   * collects names, phone numbers and email addresses. Collecting personal
+   * details with no privacy statement anywhere looks careless to exactly the
+   * sponsors and institutions you are trying to impress.
+   * ═════════════════════════════════════════════════════════════════════════ */
+  legal: {
+    rules: {
+      title: "Rules",
+      body: [] as string[],
+    },
+    terms: {
+      title: "Terms",
+      body: [] as string[],
+    },
+    privacy: {
+      title: "Privacy",
+      body: [] as string[],
+    },
+  } satisfies Record<string, LegalPage>,
 
   /* ═════════════════════════════════════════════════════════════════════════
    * 9. NAVIGATION
@@ -612,15 +699,43 @@ export const siteConfig = {
       eyebrow: "चलो, दिखाओ",
       heading: "Apply to perform",
       lead: "Applying is free. If you are selected, there is a small nominal fee to confirm your slot — nothing before that.",
-      /** What the Google Form asks for, so applicants arrive prepared. */
+      /**
+       * [FACTUAL] — this list mirrors the live Google Form question for
+       * question, checked against it directly. The whole point is that
+       * somebody reads this, gathers what they need, and then fills the form
+       * in one sitting instead of abandoning it halfway.
+       *
+       * ⚠️  If you edit the Google Form, edit this list to match. A preview
+       * that lies is worse than no preview.
+       */
       fieldPreview: [
-        { label: "Your name" },
-        { label: "Category", hint: "Open mic, band or solo instrumental" },
-        { label: "Contact number" },
-        { label: "Email address" },
-        { label: "An audio or video sample", hint: "A link, or upload a file directly" },
-        { label: "Band size", hint: "How many of you are there" },
-        { label: "The song you will perform", hint: "And whether it is an original or a cover" },
+        {
+          label: "Name",
+          hint: "Yours, or your band or group's.",
+        },
+        {
+          label: "Category",
+          hint: "Vocalist · Instrumentalist · Band · Singer-songwriter · Rapper or spoken word · DJ or producer · Other",
+        },
+        {
+          label: "Contact number",
+          hint: "10-digit mobile. WhatsApp preferred.",
+        },
+        { label: "Email" },
+        {
+          label: "Audio or video link",
+          hint: "YouTube, Instagram, Google Drive, SoundCloud — anything we can open.",
+          optional: true,
+        },
+        {
+          label: "Band size",
+          hint: "Solo · Duo · Trio · 4-5 · 6 or more",
+        },
+        {
+          label: "Song you plan to perform",
+          hint: "Title, and the artist if it is a cover.",
+        },
+        { label: "Original or cover" },
       ] as FormFieldPreview[],
       note: "The application form opens on Google and needs a Google sign-in, because it accepts a direct file upload.",
       ctaLabel: "Open the application form",
@@ -633,19 +748,22 @@ export const siteConfig = {
       eyebrow: "जुड़ जाओ",
       heading: "Join the community",
       body: "Announcements, dates and calls for entries land here first.",
-      ctaLabel: "Join on WhatsApp",
+      /** Used once links.whatsappCommunity has a real invite link. */
+      ctaLabel: "Join the WhatsApp group",
+      /**
+       * Used while that link is still null — which it is today. Rather than
+       * hiding the section, it points at the ordinary WhatsApp number and asks
+       * to be added by hand. A section that still converts beats a hidden one.
+       */
+      ctaPendingLabel: "Message us to get added",
+      pendingNote:
+        "The group is being set up. Message us and you go on the list for the invite.",
     },
 
     /* ─── FOOTER ───────────────────────────────────────────────────────── */
     footer: {
       /** Shown small, at the very bottom. */
       credit: "Kool Kalakaars is an independent, not-for-profit initiative.",
-      /** These pages exist but stay out of the navigation until written. */
-      legalLinks: [
-        { label: "Rules", href: "/rules" },
-        { label: "Terms", href: "/terms" },
-        { label: "Privacy", href: "/privacy" },
-      ],
     },
 
     /* ─── MARQUEE ──────────────────────────────────────────────────────────

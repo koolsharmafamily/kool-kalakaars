@@ -1,5 +1,4 @@
 import siteConfig from "@/content/site.config";
-import SectionPlaceholder from "@/components/ui/SectionPlaceholder";
 import Hero from "@/components/sections/Hero";
 import Idea from "@/components/sections/Idea";
 import WhyNagpur from "@/components/sections/WhyNagpur";
@@ -7,12 +6,15 @@ import Categories from "@/components/sections/Categories";
 import HowANightRuns from "@/components/sections/HowANightRuns";
 import Venue from "@/components/sections/Venue";
 import Sponsor from "@/components/sections/Sponsor";
+import TicketForm from "@/components/sections/TicketForm";
+import Perform from "@/components/sections/Perform";
+import Community from "@/components/sections/Community";
 
 /**
  * THE PAGE
  * ========
- * Sections 1 to 7 are built. 8 and 9 are still placeholders: the free ticket
- * form and apply to perform, both of which land with the forms step.
+ * Every section is now built. What remains is the animation layer, the
+ * Runway video swap, and the metadata / structured-data pass.
  *
  * The light/dark rhythm is deliberate and worth preserving as the remaining
  * sections land:
@@ -25,8 +27,9 @@ import Sponsor from "@/components/sections/Sponsor";
  *   05 The night     indigo
  *   06 Venue         ice        <- light, so the bright map belongs
  *   07 Sponsor       violet     <- torn edges, ice cards, the hard stop
- *   08 Tickets       ice        (placeholder)
- *   09 Perform       indigo     (placeholder)
+ *   08 Tickets       ice        <- the native form
+ *   09 Perform       indigo     <- previews the Google Form, links out
+ *   10 Community     violet
  *
  * The hero (id="top") is what the sticky nav and the floating WhatsApp button
  * observe. Both stay hidden until the whole hero is scrolled past.
@@ -71,65 +74,11 @@ export default function Home() {
 
       <Sponsor />
 
-      {/* ══ 08 · FREE TICKET ═══════════════════════════════════════════════
-          data-fab-avoid keeps the floating WhatsApp button off the form. */}
-      <SectionPlaceholder
-        id="tickets"
-        n="08"
-        eyebrow={copy.tickets.eyebrow}
-        title={copy.tickets.heading}
-        note={copy.tickets.lead}
-        tone="light"
-        data-fab-avoid=""
-      >
-        <div className="border-ink-dark/20 mt-10 max-w-lg space-y-4 rounded-xl border-2 border-dashed p-6">
-          {["Name", "Phone", "Email", "Seats"].map((f) => (
-            <div key={f}>
-              <span className="text-small text-ink-muted-dark font-bold">
-                {f}
-              </span>
-              <div className="border-ink-dark/25 mt-1 h-12 rounded-lg border" />
-            </div>
-          ))}
-        </div>
-      </SectionPlaceholder>
+      <TicketForm />
 
-      {/* ══ 09 · APPLY TO PERFORM ══════════════════════════════════════════ */}
-      <SectionPlaceholder
-        id="perform"
-        n="09"
-        eyebrow={copy.perform.eyebrow}
-        title={copy.perform.heading}
-        note={copy.perform.lead}
-        data-fab-avoid=""
-      >
-        <ul className="mt-10 grid max-w-3xl gap-3 sm:grid-cols-2">
-          {copy.perform.fieldPreview.map((f) => (
-            <li key={f.label} className="border-rule rounded-lg border p-4">
-              <span className="font-bold">{f.label}</span>
-              {f.hint ? (
-                <span className="text-ink-muted text-small mt-1 block">
-                  {f.hint}
-                </span>
-              ) : null}
-            </li>
-          ))}
-        </ul>
-      </SectionPlaceholder>
+      <Perform />
 
-      {/* ══ 10 · COMMUNITY ═════════════════════════════════════════════════
-          Hidden entirely while the invite link is null — which it is. */}
-      {siteConfig.links.whatsappCommunity ? (
-        <SectionPlaceholder
-          id="community"
-          n="10"
-          eyebrow={copy.community.eyebrow}
-          title={copy.community.heading}
-          note={copy.community.body}
-          tone="violet"
-          minH="min-h-[40vh]"
-        />
-      ) : null}
+      <Community />
     </>
   );
 }

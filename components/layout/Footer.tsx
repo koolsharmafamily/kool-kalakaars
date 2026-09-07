@@ -1,6 +1,7 @@
 import Link from "next/link";
 import siteConfig from "@/content/site.config";
 import SocialLinks from "@/components/ui/SocialLinks";
+import { publishedLegalPages } from "@/lib/legal";
 
 /**
  * FOOTER
@@ -14,6 +15,11 @@ import SocialLinks from "@/components/ui/SocialLinks";
 
 export function Footer() {
   const { site, contact, venue, copy } = siteConfig;
+
+  // Only legal pages that actually have content. All three are empty today,
+  // so no legal row renders at all — better than linking to three pages that
+  // each say "being written".
+  const legal = publishedLegalPages();
 
   return (
     <footer className="border-rule bg-surface border-t">
@@ -85,18 +91,20 @@ export function Footer() {
         <div className="border-rule mt-14 flex flex-col gap-5 border-t pt-8 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-micro text-ink-muted">{copy.footer.credit}</p>
 
-          <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
-            {copy.footer.legalLinks.map((l) => (
-              <li key={l.href}>
-                <Link
-                  href={l.href}
-                  className="text-micro text-ink-muted hover:text-ink font-bold uppercase transition-colors"
-                >
-                  {l.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+          {legal.length > 0 ? (
+            <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
+              {legal.map((entry) => (
+                <li key={entry.href}>
+                  <Link
+                    href={entry.href}
+                    className="text-micro text-ink-muted hover:text-ink font-bold uppercase transition-colors"
+                  >
+                    {entry.page.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          ) : null}
         </div>
       </div>
     </footer>
