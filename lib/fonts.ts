@@ -1,4 +1,5 @@
-import { Anton, Manrope, Noto_Sans_Devanagari } from "next/font/google";
+import { Anton, Manrope } from "next/font/google";
+import localFont from "next/font/local";
 
 /**
  * TYPEFACES
@@ -43,16 +44,35 @@ export const manrope = Manrope({
 });
 
 /**
- * DEVANAGARI — Noto Sans Devanagari (variable).
- * Subsetted to `devanagari` ONLY. Anton and Manrope already cover Latin, so
- * shipping Noto's Latin glyphs would be pure dead weight.
+ * DEVANAGARI — Noto Sans Devanagari, cut to the exact glyphs this site uses.
  *
- * preload is deliberately false: Devanagari is flavour and emphasis only, a
- * handful of glyphs well below the fold. Preloading it would compete with
- * the hero for bandwidth on a mid-range Android connection.
+ * ── WHY THIS IS A LOCAL FILE AND NOT next/font/google ───────────────────────
+ * The full `devanagari` subset that next/font/google ships is 121 KB. This
+ * site renders Devanagari in about ten decorative words — the eyebrow above
+ * each section heading. Anton and Manrope together are 37 KB, so the Hindi
+ * flavour text was costing four times more than every other typeface on the
+ * site combined, and Lighthouse put it squarely on the critical path:
+ *
+ *   document -> stylesheet -> Noto woff2 -> text paints -> LCP
+ *
+ * scripts/subset-devanagari.mjs reads every Devanagari character actually
+ * present in site.config.ts (27 of them) and fetches a font cut to exactly
+ * those. Result: 34.4 KB, 71% smaller, same glyphs on screen.
+ *
+ * ⚠️  RE-RUN THAT SCRIPT WHENEVER YOU CHANGE HINDI TEXT IN THE CONFIG.
+ * A character that is not in the subset falls back to a system font and looks
+ * wrong. The script prints exactly which characters it included.
+ *
+ * The file is a variable font covering 400-700 in one payload, which is why
+ * there is a single `src` rather than one per weight.
+ *
+ * preload stays false: this is flavour text, all of it below the fold, and it
+ * should never compete with the hero artwork for the first bytes of bandwidth.
  */
-export const notoDevanagari = Noto_Sans_Devanagari({
-  subsets: ["devanagari"],
+export const notoDevanagari = localFont({
+  src: "../app/fonts/noto-devanagari-subset.woff2",
+  weight: "400 700",
+  style: "normal",
   display: "swap",
   variable: "--font-noto-dev",
   preload: false,

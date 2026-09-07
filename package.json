@@ -8,7 +8,10 @@
     "start": "next start",
     "lint": "next lint",
     "typecheck": "tsc --noEmit",
-    "test:countdown": "node --experimental-strip-types scripts/countdown.test.mjs"
+    "test:countdown": "node --experimental-strip-types scripts/countdown.test.mjs",
+    "lighthouse": "node scripts/lighthouse.mjs",
+    "prepare:hero": "node scripts/prepare-hero.mjs",
+    "prepare:fonts": "node scripts/subset-devanagari.mjs"
   },
   "dependencies": {
     "motion": "^13.2.0",
@@ -21,6 +24,8 @@
     "@types/node": "^26.4.1",
     "@types/react": "^19.2.18",
     "@types/react-dom": "^19.2.7",
+    "chrome-launcher": "^1.2.1",
+    "lighthouse": "^13.4.1",
     "postcss": "^8.5.28",
     "sharp": "^0.35.4",
     "tailwindcss": "^4.3.3",

@@ -1,5 +1,6 @@
 import siteConfig from "@/content/site.config";
 import Drift from "@/components/anim/Drift";
+import HeroMedia from "@/components/sections/HeroMedia";
 
 /**
  * HERO BACKDROP
@@ -36,19 +37,17 @@ import Drift from "@/components/anim/Drift";
  * layers that never sit behind a word.
  */
 
-/** The one number the contrast guarantee depends on. See the maths above. */
-const SCRIM_OPACITY = 0.72;
-
 export function HeroBackdrop() {
   const { media } = siteConfig;
   const hasVideo = Boolean(media.heroVideoDesktop || media.heroVideoMobile);
+  const hasMedia = hasVideo || Boolean(media.heroImage);
 
   return (
     <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
       {/* ── 1. THE MOVING FIELD ───────────────────────────────────────────
           Radial gradients that fade to transparent, so they read soft with no
           blur() filter anywhere. Only `transform` is animated. */}
-      {!hasVideo ? (
+      {!hasMedia ? (
         <div className="absolute inset-0">
           <div
             className="kk-blob"
@@ -101,13 +100,12 @@ export function HeroBackdrop() {
         </div>
       ) : null}
 
-      {/* ── 2. THE SCRIM ──────────────────────────────────────────────────
-          Everything above this line is decoration. Everything below it is
-          guaranteed legible. */}
-      <div
-        className="bg-indigo absolute inset-0"
-        style={{ opacity: SCRIM_OPACITY }}
-      />
+      {/* ── 2. ARTWORK / VIDEO + THE SCRIM ────────────────────────────────
+          HeroMedia renders the poster first, mounts video over it only when
+          the connection and motion preference allow, and owns the scrim —
+          which differs between the two because a video frame cannot be
+          inspected in advance but an image can. */}
+      <HeroMedia />
 
       {/* ── 3. ABOVE-SCRIM ACCENTS ────────────────────────────────────────
           Full strength, and kept to the corners so they never sit behind

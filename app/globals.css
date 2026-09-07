@@ -77,7 +77,13 @@
      One stack each. The browser falls through PER GLYPH, so a Hinglish line
      pulls Latin from Manrope/Anton and Devanagari from Noto without any
      class on the element and without a visible switch mid-sentence.        */
-  --font-display: var(--font-anton), var(--font-noto-dev), "Arial Narrow", sans-serif;
+  /* Anton is Latin-only and no heading on this site contains Devanagari — the
+     Hindi eyebrows are body text. Listing Noto here anyway put a 35 KB font in
+     the dependency chain of the LCP element (the hero headline), which paints
+     pure Latin. Dropping it from the display stack takes it off that path
+     entirely while leaving every Hindi word rendered exactly as before,
+     because those all resolve through --font-body below. */
+  --font-display: var(--font-anton), "Arial Narrow", sans-serif;
   --font-body: var(--font-manrope), var(--font-noto-dev), system-ui, sans-serif;
 
   /* ─── TYPE SCALE ────────────────────────────────────────────────────────

@@ -348,7 +348,37 @@ export const siteConfig = {
      */
     heroVideoDesktop: null as string | null,
     heroVideoMobile: null as string | null,
-    heroPoster: null as string | null,
+
+    /**
+     * THE HERO ARTWORK.
+     *
+     * Two encodes, served by viewport. The mobile file is the portrait
+     * original; the desktop file is a landscape crop taken from the upper part
+     * of the artwork, where the face and the microphone are.
+     *
+     * AVIF is what almost every phone will actually download; the WebP is
+     * there for anything that cannot take AVIF. Both are listed because a
+     * <picture> falls through them in order.
+     *
+     * This same image is ALSO the poster frame for the hero video when one
+     * exists — one asset, both jobs.
+     *
+     * Re-generate after replacing the source: node scripts/prepare-hero.mjs
+     */
+    heroImage: {
+      mobileAvif: "/hero/hero-mobile.avif",
+      mobileWebp: "/hero/hero-mobile.webp",
+      desktopAvif: "/hero/hero-desktop.avif",
+      desktopWebp: "/hero/hero-desktop.webp",
+      /** Describes the artwork for anyone who cannot see it. */
+      alt: "Illustration of a singer at a vintage microphone, in halftone and screen-print colour, with block-printed textile patterns behind her",
+    } as {
+      mobileAvif: string;
+      mobileWebp: string;
+      desktopAvif: string;
+      desktopWebp: string;
+      alt: string;
+    } | null,
 
     /** The picture shown when the site is shared. 1200x630 pixels. */
     ogImage: "/og.png",
