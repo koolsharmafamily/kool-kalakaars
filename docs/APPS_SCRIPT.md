@@ -2,8 +2,8 @@
 
 **Status: the endpoint is deployed but does not work yet.**
 
-The web app URL in `site.config.ts` is live and publicly reachable, which is
-the hard part and it is already done. But the script behind it has no `doPost`
+The web app is deployed and publicly reachable, which is the hard part and it
+is already done. But the script behind it has no `doPost`
 function, so it cannot receive anything. Posting to it right now returns:
 
 ```
@@ -36,7 +36,9 @@ instead — which is correct, and is what you want it doing.
 
 ### 1. Open the script
 
-Go to your Apps Script project — the one that produced this URL:
+Go to your Apps Script project. Its web-app URL is the value of the
+TICKET_ENDPOINT_URL environment variable in Vercel — it is deliberately not
+written down in this repository, which is public:
 
 ```
 https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec
@@ -162,19 +164,19 @@ component, no form, no styling — needs touching.
 
 ---
 
-## Optional: keep the URL off the website
+## Where the endpoint URL lives
 
-By default the endpoint URL sits in `site.config.ts`, so you can change it
-without a developer. If you would rather it not appear in the site's source,
-put it in an environment variable instead:
+In an environment variable, not in the code:
 
-```
-TICKET_ENDPOINT_URL=https://script.google.com/macros/s/.../exec
-```
 
-Set it in Vercel under **Settings → Environment Variables**. When present it
-overrides the config value.
 
-This is a mild improvement, not a security measure — the endpoint accepts
-submissions from anyone by design. Spam protection lives in the route handler:
-a hidden honeypot field, a minimum fill time, and per-IP rate limiting.
+Set it in Vercel under **Settings → Environment Variables**, for both
+Production and Preview.
+
+It is kept out of the repository because this repository is public and this is
+a write endpoint — anyone who finds the URL can post to it directly, skipping
+the protections in . Those protections are a hidden honeypot
+field, a minimum fill time, and per-IP rate limiting.
+
+To change the endpoint later, edit the environment variable and redeploy. No
+code change is needed.

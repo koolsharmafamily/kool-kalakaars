@@ -96,6 +96,15 @@ export type LegalPage = {
   body: string[];
 };
 
+export type HeroImageSet = {
+  mobileAvif: string;
+  mobileWebp: string;
+  desktopAvif: string;
+  desktopWebp: string;
+  /** Describes the picture for anyone who cannot see it. */
+  alt: string;
+};
+
 export type Sponsor = {
   /** The organisation name, exactly as they write it. */
   name: string;
@@ -277,26 +286,21 @@ export const siteConfig = {
         | null,
 
     /**
-     * Where free-ticket requests are sent. This is a Google Apps Script web
-     * app that writes a row into a Google Sheet.
+     * Where free-ticket requests are sent.
      *
-     * The browser never calls this directly — it posts to /api/ticket on our
-     * own site, which forwards it here. That avoids the CORS problems Apps
-     * Script is prone to, keeps the URL out of the public page source, and
-     * lets us check the reply properly before telling anyone their seat is
-     * booked.
+     * ⚠️  THIS LIVES IN AN ENVIRONMENT VARIABLE, NOT HERE.
      *
-     * ⚠️  Setting this alone is NOT enough. The script itself must contain a
-     * doPost function. As of the last check it does not — see
-     * docs/APPS_SCRIPT.md for the code to paste in and how to redeploy.
+     * The repository is public, and this is a write endpoint that anyone who
+     * finds it can post to. Keeping it out of the source means bots cannot
+     * scrape it from GitHub and hammer the spreadsheet directly, bypassing
+     * the rate limiting in /api/ticket.
      *
-     * You can also override this with a TICKET_ENDPOINT_URL environment
-     * variable, which takes precedence and keeps the URL off the site.
+     * Set TICKET_ENDPOINT_URL in Vercel under Settings > Environment
+     * Variables, for Production and Preview. See docs/APPS_SCRIPT.md.
+     *
+     * Leaving this null is correct — the route handler reads the env var.
      */
-    ticketEndpoint:
-      "https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec" as
-        | string
-        | null,
+    ticketEndpoint: null as string | null,
 
     /**
      * TODO: the WhatsApp community invite link (looks like
@@ -346,8 +350,29 @@ export const siteConfig = {
      * While all three are null the hero shows an animated pop-art gradient
      * built in code. The site is complete and reviewable without the video.
      */
-    heroVideoDesktop: null as string | null,
-    heroVideoMobile: null as string | null,
+    /**
+     * The hero video. Two encodes, served by viewport.
+     *
+     * Both are muted, looping decoration with the audio track stripped. Set
+     * either to null to fall back to the still artwork below.
+     *
+     * Re-generate after replacing the master: npm run prepare:video
+     */
+    heroVideoDesktop: "/video/hero-desktop.mp4" as string | null,
+    heroVideoMobile: "/video/hero-mobile.mp4" as string | null,
+
+    /**
+     * Poster for the video — a frame taken from the video itself, so there is
+     * no visible jump when playback starts. Used whenever a video is set;
+     * heroImage below is used when there is no video.
+     */
+    heroVideoPoster: {
+      mobileAvif: "/video/hero-video-poster-mobile.avif",
+      mobileWebp: "/video/hero-video-poster-mobile.webp",
+      desktopAvif: "/video/hero-video-poster-desktop.avif",
+      desktopWebp: "/video/hero-video-poster-desktop.webp",
+      alt: "Illustrated Kool Kalakaars poster: singers, a tabla player, a dancer and a guitarist in bright halftone colour",
+    } as HeroImageSet | null,
 
     /**
      * THE HERO ARTWORK.
@@ -372,13 +397,7 @@ export const siteConfig = {
       desktopWebp: "/hero/hero-desktop.webp",
       /** Describes the artwork for anyone who cannot see it. */
       alt: "Illustration of a singer at a vintage microphone, in halftone and screen-print colour, with block-printed textile patterns behind her",
-    } as {
-      mobileAvif: string;
-      mobileWebp: string;
-      desktopAvif: string;
-      desktopWebp: string;
-      alt: string;
-    } | null,
+    } as HeroImageSet | null,
 
     /** The picture shown when the site is shared. 1200x630 pixels. */
     ogImage: "/og.png",

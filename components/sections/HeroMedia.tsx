@@ -92,21 +92,49 @@ type HeroImage = {
 type MediaConfig = {
   heroVideoDesktop: string | null;
   heroVideoMobile: string | null;
+  heroVideoPoster: HeroImage | null;
   heroImage: HeroImage | null;
 };
 
 /** Takes the media block as a prop; see the note in Countdown for why. */
 export function HeroMedia({ media }: { media: MediaConfig }) {
-  const image = media.heroImage;
   const hasVideo = Boolean(media.heroVideoDesktop || media.heroVideoMobile);
+
+  /**
+   * With a video, the still shown first is a frame FROM that video, so there
+   * is no visible jump when playback starts. Without one, it is the standalone
+   * artwork. Either way something is painted before any video byte arrives.
+   */
+  const image = hasVideo ? media.heroVideoPoster : media.heroImage;
 
   const [showVideo, setShowVideo] = useState(false);
   const [videoReady, setVideoReady] = useState(false);
+  const [videoSrc, setVideoSrc] = useState<string | null>(null);
 
   useEffect(() => {
     if (!hasVideo) return;
-    if (videoAllowed()) setShowVideo(true);
-  }, [hasVideo]);
+    if (!videoAllowed()) return;
+
+    /**
+     * THE VIDEO SOURCE IS CHOSEN HERE, NOT WITH <source media>.
+     *
+     * `media` on a <source> element works inside <picture> and is IGNORED
+     * inside <video> — browsers simply take the first source whose `type` they
+     * support. Written the obvious way, every desktop visitor silently got the
+     * mobile encode; measured currentSrc was hero-mobile.mp4 on a 1280px
+     * viewport. It fails quietly, which is why it is worth the comment.
+     *
+     * So the choice is made once, on the client, with matchMedia. The video
+     * only mounts on the client anyway, so nothing is lost by doing it here.
+     */
+    const desktop = window.matchMedia(DESKTOP_BREAKPOINT).matches;
+    const chosen = desktop
+      ? (media.heroVideoDesktop ?? media.heroVideoMobile)
+      : (media.heroVideoMobile ?? media.heroVideoDesktop);
+
+    setVideoSrc(chosen);
+    setShowVideo(true);
+  }, [hasVideo, media.heroVideoDesktop, media.heroVideoMobile]);
 
   // Nothing supplied at all — the CSS field in HeroBackdrop stands in.
   if (!image && !hasVideo) return null;
@@ -138,7 +166,7 @@ export function HeroMedia({ media }: { media: MediaConfig }) {
             // the hero, but stating it keeps the aspect ratio known before
             // download and guarantees no shift.
             width={720}
-            height={1440}
+            height={hasVideo ? 405 : 1440}
             fetchPriority="high"
             decoding="async"
             className="absolute inset-0 size-full object-cover object-[50%_32%]"
@@ -150,14 +178,18 @@ export function HeroMedia({ media }: { media: MediaConfig }) {
           Mounted only after the client has confirmed it is wanted. Sits over
           the poster and fades up on canplay, so there is never a black frame
           or a flash of empty box. */}
-      {showVideo ? (
+      {showVideo && videoSrc ? (
         <video
+          // `src` directly rather than <source> children — see the note in the
+          // effect above for why media-based source selection cannot be used
+          // inside <video>.
+          src={videoSrc}
           autoPlay
           muted
           loop
           playsInline
-          // Both are required or iOS silently refuses to autoplay.
-          poster={image?.mobileWebp}
+          // muted and playsInline are BOTH required or iOS refuses to autoplay.
+          poster={image?.mobileAvif ?? image?.mobileWebp}
           preload="auto"
           aria-hidden="true"
           onCanPlay={() => setVideoReady(true)}
@@ -166,18 +198,7 @@ export function HeroMedia({ media }: { media: MediaConfig }) {
             "transition-opacity duration-700 motion-reduce:transition-none",
             videoReady ? "opacity-100" : "opacity-0",
           ].join(" ")}
-        >
-          {media.heroVideoDesktop ? (
-            <source
-              src={media.heroVideoDesktop}
-              media={DESKTOP_BREAKPOINT}
-              type="video/mp4"
-            />
-          ) : null}
-          {media.heroVideoMobile ? (
-            <source src={media.heroVideoMobile} type="video/mp4" />
-          ) : null}
-        </video>
+        />
       ) : null}
 
       {/* ── SCRIM ─────────────────────────────────────────────────────────
