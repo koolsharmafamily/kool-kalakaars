@@ -351,15 +351,27 @@ export const siteConfig = {
      * built in code. The site is complete and reviewable without the video.
      */
     /**
-     * The hero video. Two encodes, served by viewport.
+     * The hero video. Encoded and ready at /video/hero-desktop.mp4 and
+     * /video/hero-mobile.mp4 — set the two values below to those paths and the
+     * video goes live. Everything else is already wired.
      *
-     * Both are muted, looping decoration with the audio track stripped. Set
-     * either to null to fall back to the still artwork below.
+     * ⚠️  HELD OFF DELIBERATELY. The current master has the words KOOL
+     * KALAKAARS painted into it, and the hero renders that name again as live
+     * HTML text. Both sit dead centre, so the name appears twice in two
+     * different typefaces. The 72% scrim mutes the video but does not hide
+     * lettering that large.
      *
-     * Re-generate after replacing the master: npm run prepare:video
+     * Three ways to fix it, any of which makes this switch-on-able:
+     *   1. Re-render the master with no text in it (what the brief asked for)
+     *   2. Give the film its own section further down the page, where its
+     *      title card belongs and nothing competes with it
+     *   3. Keep the video here and drop the HTML wordmark to screen-reader-only
+     *      so the film supplies the title
+     *
+     * Re-generate the encodes after replacing the master: npm run prepare:video
      */
-    heroVideoDesktop: "/video/hero-desktop.mp4" as string | null,
-    heroVideoMobile: "/video/hero-mobile.mp4" as string | null,
+    heroVideoDesktop: null as string | null, // see the note above before setting
+    heroVideoMobile: null as string | null,  // see the note above before setting
 
     /**
      * Poster for the video — a frame taken from the video itself, so there is
