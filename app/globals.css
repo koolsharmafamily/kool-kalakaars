@@ -254,3 +254,277 @@
     }
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ANIMATION LAYER
+   ───────────────────────────────────────────────────────────────────────────
+   EVERY animation on this site is declared in this block. If it is not here,
+   it does not move.
+
+   THE RULES, AND WHERE THEY ARE ENFORCED:
+
+   · transform and opacity ONLY. No width, height, top, left, box-shadow,
+     filter or background-position is animated anywhere below. Both are
+     GPU-composited, so none of this triggers layout or paint.
+
+   · prefers-reduced-motion switches everything off in ONE place, at the very
+     bottom of this file. Not per-effect — one blanket override, so a new
+     animation cannot be added that forgets to respect it.
+
+   · Anything expensive is gated behind the desktop query, which excludes
+     touch via (hover: hover) and (pointer: fine).
+
+   · Nothing here touches scroll behaviour. No scroll-jacking, no custom
+     scrollbars, native momentum untouched.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* ── SHARED EASING ───────────────────────────────────────────────────────────
+   One overshooting curve used everywhere, so the whole site moves with the
+   same personality. The overshoot is what reads as springy without needing a
+   physics engine. */
+:root {
+  --ease-pop: cubic-bezier(0.22, 1.2, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ═══ SCROLL REVEALS ══════════════════════════════════════════════════════
+   Driven by the shared IntersectionObserver in components/anim/Reveal.tsx.
+   The stagger is a transition-delay set inline, never a JavaScript timer. */
+
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(0, 26px, 0);
+  transition:
+    opacity 0.62s var(--ease-out),
+    transform 0.62s var(--ease-out);
+  transition-delay: var(--reveal-delay, 0ms);
+}
+
+[data-reveal][data-revealed] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+/* Reduced density on small viewports: shorter travel, quicker settle. A 26px
+   lift on a 360px screen is proportionally a much larger movement. */
+@media (max-width: 640px) {
+  [data-reveal] {
+    transform: translate3d(0, 14px, 0);
+    transition-duration: 0.48s;
+  }
+}
+
+/* ═══ HERO ENTRANCE ═══════════════════════════════════════════════════════ */
+
+@keyframes kk-rise {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 22px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* The two name lines slide in from opposite sides with a slight rotation, the
+   way two pieces of a paste-up land not quite square.
+
+   NOTE THE ABSENCE OF OPACITY HERE. These are the largest text on screen and
+   the likely LCP element, and an element at opacity 0 does not count as
+   painted for Largest Contentful Paint. Fading the headline in would push LCP
+   back by the length of the animation. Sliding it on transform alone means it
+   is painted on the very first frame and LCP is untouched. */
+@keyframes kk-slide-left {
+  from {
+    transform: translate3d(-7%, 0, 0) rotate(-2.2deg);
+  }
+  to {
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+
+@keyframes kk-slide-right {
+  from {
+    transform: translate3d(7%, 0, 0) rotate(1.8deg);
+  }
+  to {
+    transform: translate3d(0, 0, 0) rotate(0);
+  }
+}
+
+.kk-hero-item {
+  animation: kk-rise 0.66s var(--ease-out) both;
+  animation-delay: var(--kk-delay, 0ms);
+}
+
+.kk-hero-name-a {
+  animation: kk-slide-left 0.72s var(--ease-pop) both;
+}
+
+.kk-hero-name-b {
+  animation: kk-slide-right 0.72s var(--ease-pop) both;
+  animation-delay: 90ms;
+}
+
+/* ═══ COUNTDOWN ROLL-UP ═══════════════════════════════════════════════════
+   Each digit pair sits in a clipped box and rolls up when its value changes.
+   React keys the span on the value, so a change remounts it and the animation
+   runs again. Transform only — the clipping is a static overflow, not
+   something that animates. */
+
+@keyframes kk-roll {
+  from {
+    transform: translate3d(0, 100%, 0);
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.kk-digit-window {
+  overflow: hidden;
+}
+
+.kk-digit {
+  display: block;
+  animation: kk-roll 0.42s var(--ease-pop) both;
+}
+
+/* ═══ SPRINGY HOVER — DESKTOP ONLY ════════════════════════════════════════
+   Guarded on hover+pointer so a tap on a phone never leaves a button stuck in
+   its hover state, which is the usual way hover effects fail on touch. */
+
+@media (hover: hover) and (pointer: fine) {
+  .kk-springy {
+    transition:
+      transform 0.34s var(--ease-pop),
+      background-color 0.2s ease,
+      border-color 0.2s ease,
+      color 0.2s ease;
+  }
+
+  .kk-springy:hover {
+    transform: translate3d(0, -3px, 0) scale(1.025);
+  }
+
+  .kk-springy:active {
+    transform: translate3d(0, 0, 0) scale(0.97);
+    transition-duration: 0.09s;
+  }
+}
+
+/* ═══ CATEGORY SECTION — PINNED HORIZONTAL TRACK ══════════════════════════
+   Desktop only. The media query below is duplicated in lib/motionPrefs.ts as
+   DESKTOP_MOTION — CHANGE ONE, CHANGE THE OTHER.
+
+   The layout switch happens in CSS, before first paint, so there is no
+   hydration mismatch and no post-mount layout shift. The JavaScript attaches
+   the scroll subscription only when the same query matches.
+
+   This is NOT scroll-jacking. The page scrolls natively at its normal speed;
+   a tall spacer supplies the distance and a sticky child holds position while
+   its contents translate sideways. Momentum, scrollbar and scroll position are
+   untouched — stop scrolling and it stops instantly. */
+
+@media (min-width: 1024px) and (hover: hover) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  /* Scroll distance for the sweep. Tuned against the track width below so the
+     horizontal travel is roughly two thirds of the vertical scroll — fast
+     enough to feel driven, slow enough to read each card. */
+  .kk-cat-pin {
+    height: 250vh;
+  }
+
+  .kk-cat-sticky {
+    position: sticky;
+    top: 0;
+    display: flex;
+    height: 100vh;
+    align-items: center;
+    overflow: hidden;
+  }
+
+  .kk-cat-track {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 4vw;
+    padding-inline: 7vw;
+    will-change: transform;
+
+    /* The track carries Tailwind's `mx-auto max-w-7xl` for the stacked
+       layout. Both have to go here, or the flex row is capped at 80rem and
+       there is almost nothing to travel — which is exactly the bug this
+       comment exists to stop anyone reintroducing. */
+    max-width: none;
+    margin-inline: 0;
+    padding-block: 0;
+  }
+
+  .kk-cat-card {
+    flex: 0 0 auto;
+    width: 32vw;
+    max-width: 480px;
+    /* Cancels the stacked layout's vertical rhythm. */
+    margin-top: 0;
+  }
+
+  /* The heading travels with the track, so the section reads as one moving
+     board rather than a static title with a carousel bolted underneath. */
+  .kk-cat-intro {
+    flex: 0 0 auto;
+    width: 32vw;
+    max-width: 500px;
+  }
+}
+
+/* ═══ DRIFTING DECORATION ═════════════════════════════════════════════════
+   Halftone and cut-paper layers that parallax on scroll. Desktop only, and
+   the transform is written by the shared rAF loop, never by CSS. */
+
+.kk-drift {
+  will-change: transform;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   THE OFF SWITCH
+   ───────────────────────────────────────────────────────────────────────────
+   One place. Every animation above is cancelled here and the scroll engine
+   refuses to start, so nothing moves at all: reveals become instant, the
+   pinned track becomes an ordinary stack, parallax stops, hover stops.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  [data-reveal] {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .kk-hero-item,
+  .kk-hero-name-a,
+  .kk-hero-name-b,
+  .kk-digit {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .kk-springy:hover,
+  .kk-springy:active {
+    transform: none !important;
+  }
+
+  .kk-drift {
+    transform: none !important;
+    will-change: auto;
+  }
+}

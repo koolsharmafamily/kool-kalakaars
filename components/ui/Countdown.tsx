@@ -35,17 +35,39 @@ const UNITS = [
   { key: "seconds", label: "Secs" },
 ] as const;
 
+/**
+ * A digit pair that rolls up when its value changes.
+ *
+ * The `key` is the value itself, so React discards the old span and mounts a
+ * new one whenever the number changes — which restarts the CSS animation. No
+ * timers, no animation state to manage, and nothing runs on the ticks where
+ * the number has not changed.
+ *
+ * The clipping box is a static `overflow: hidden`; only the inner span moves,
+ * and only on transform.
+ */
 function Digits({ value }: { value: number | null }) {
-  // Two characters wide always, so 9 -> 09 and the box never resizes.
+  // Two characters wide always, so 9 renders as 09 and the box never resizes.
   const text = value === null ? "––" : String(value).padStart(2, "0");
   return (
-    <span className="font-display text-cta text-4xl leading-none tabular-nums sm:text-5xl">
-      {text}
+    <span className="kk-digit-window block">
+      <span
+        key={text}
+        className="kk-digit font-display text-cta text-4xl leading-none tabular-nums sm:text-5xl"
+      >
+        {text}
+      </span>
     </span>
   );
 }
 
-export function Countdown({ className = "" }: { className?: string }) {
+export function Countdown({
+  className = "",
+  style,
+}: {
+  className?: string;
+  style?: React.CSSProperties;
+}) {
   const { event } = siteConfig;
 
   // Computed once on the server (never "counting"), then re-derived on the
@@ -83,7 +105,7 @@ export function Countdown({ className = "" }: { className?: string }) {
     }
 
     return (
-      <div className={className}>
+      <div className={className} style={style}>
         <p className="font-display text-d3 text-ink">{event.dateTbcLabel}</p>
         <p className="text-small text-ink mt-2">{event.recurrence}</p>
       </div>
@@ -93,7 +115,7 @@ export function Countdown({ className = "" }: { className?: string }) {
   /* ── THE NIGHT HAS BEEN AND GONE ────────────────────────────────────────── */
   if (state.status === "past") {
     return (
-      <div className={className}>
+      <div className={className} style={style}>
         <p className="font-display text-d3 text-ink">{event.postEventMessage}</p>
         <p className="text-small text-ink mt-2">{event.recurrence}</p>
       </div>
@@ -104,7 +126,7 @@ export function Countdown({ className = "" }: { className?: string }) {
   const readable = formatEventDate(event.startsAt);
 
   return (
-    <div className={className}>
+    <div className={className} style={style}>
       {/* One spoken sentence for screen readers instead of eight disconnected
           numbers and labels. aria-hidden on the visual grid below avoids
           reading it twice. The live region is off — a value that changes every

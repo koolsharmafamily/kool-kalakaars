@@ -57,10 +57,11 @@ const BASE = [
   "font-body font-extrabold tracking-tight",
   "border-2 rounded-full",
   "cursor-pointer select-none",
-  "transition-[transform,background-color,border-color,color] duration-200 ease-out",
-  // Transform-only hover lift. Composited, so it costs nothing to paint.
-  "hover:-translate-y-0.5 active:translate-y-0 active:scale-[0.98]",
-  "motion-reduce:transition-none motion-reduce:hover:translate-y-0 motion-reduce:active:scale-100",
+  // Springy hover lives in .kk-springy in globals.css. It is gated behind
+  // (hover: hover) and (pointer: fine) there, so a tap on a phone can never
+  // leave a button stuck in its hover state, and it is cancelled entirely
+  // under prefers-reduced-motion.
+  "kk-springy",
   // Disabled and loading both read as "not right now".
   "disabled:pointer-events-none disabled:opacity-45",
   "aria-disabled:pointer-events-none aria-disabled:opacity-45",

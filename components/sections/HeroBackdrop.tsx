@@ -1,4 +1,5 @@
 import siteConfig from "@/content/site.config";
+import Drift from "@/components/anim/Drift";
 
 /**
  * HERO BACKDROP
@@ -111,17 +112,24 @@ export function HeroBackdrop() {
       {/* ── 3. ABOVE-SCRIM ACCENTS ────────────────────────────────────────
           Full strength, and kept to the corners so they never sit behind
           text. Static — none of this animates. */}
-      <div className="halftone-lg text-cta absolute inset-0 opacity-[0.09]" />
+      <Drift speed={0.12} className="absolute inset-0">
+        <div className="halftone-lg text-cta absolute inset-0 opacity-[0.09]" />
+      </Drift>
 
-      {/* Cut-paper corner shapes, desktop only. */}
-      <div
-        className="bg-cta absolute -top-16 -left-16 hidden size-56 rotate-12 opacity-25 md:block"
-        style={{ clipPath: "polygon(0 0, 100% 12%, 88% 100%, 6% 82%)" }}
-      />
-      <div
-        className="bg-brand absolute -right-20 -bottom-24 hidden size-72 -rotate-6 opacity-40 md:block"
-        style={{ clipPath: "polygon(8% 0, 100% 6%, 92% 94%, 0 100%)" }}
-      />
+      {/* Cut-paper corners. Hidden below md, and Drift only subscribes on a
+          desktop pointer, so on a phone these are static and cost nothing. */}
+      <Drift speed={-0.22} className="absolute inset-0 hidden md:block">
+        <div
+          className="bg-cta absolute -top-16 -left-16 size-56 rotate-12 opacity-25"
+          style={{ clipPath: "polygon(0 0, 100% 12%, 88% 100%, 6% 82%)" }}
+        />
+      </Drift>
+      <Drift speed={0.3} className="absolute inset-0 hidden md:block">
+        <div
+          className="bg-brand absolute -right-20 -bottom-24 size-72 -rotate-6 opacity-40"
+          style={{ clipPath: "polygon(8% 0, 100% 6%, 92% 94%, 0 100%)" }}
+        />
+      </Drift>
 
       {/* Grounds the bottom edge so the hero hands off into the page. */}
       <div className="from-surface absolute inset-x-0 bottom-0 h-32 bg-gradient-to-t to-transparent" />

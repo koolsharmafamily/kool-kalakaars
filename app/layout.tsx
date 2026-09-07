@@ -28,6 +28,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={fontVariables}>
+      <head>
+        {/* Scroll reveals start hidden and are un-hidden by JavaScript. If
+            JavaScript never runs, this makes every one of them visible, so the
+            page can never render as a column of invisible text. */}
+        <noscript>
+          <style>{`[data-reveal]{opacity:1!important;transform:none!important}`}</style>
+        </noscript>
+      </head>
       <body className="bg-surface text-ink font-body antialiased">
         {/* Keyboard users get past the nav in one keystroke. */}
         <a

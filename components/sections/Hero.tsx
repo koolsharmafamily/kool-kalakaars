@@ -47,8 +47,8 @@ export function Hero() {
           />
         ) : (
           <div
-            className="border-cta/45 text-cta/80 mb-8 grid h-16 w-full max-w-[280px] place-items-center rounded-lg border-2 border-dashed sm:h-20 sm:max-w-[320px]"
-            style={{ aspectRatio: `${media.logoWidth} / ${media.logoHeight}` }}
+            className="kk-hero-item border-cta/45 text-cta/80 mb-8 grid h-16 w-full max-w-[280px] place-items-center rounded-lg border-2 border-dashed sm:h-20 sm:max-w-[320px]"
+            style={{ aspectRatio: `${media.logoWidth} / ${media.logoHeight}`, ["--kk-delay"]: "0ms" } as React.CSSProperties}
           >
             <span className="text-micro font-bold uppercase">
               Logo slot · {media.logoWidth}×{media.logoHeight}
@@ -70,18 +70,24 @@ export function Hero() {
             (the name at 74px, the countdown digits) or on a solid fill it
             controls itself (the primary button, indigo on acid at 8.49:1).
             Hierarchy comes from weight and size instead of from dimming. */}
-        <p className="text-eyebrow text-ink font-bold tracking-[0.18em] uppercase">
+        <p
+          className="kk-hero-item text-eyebrow text-ink font-bold tracking-[0.18em] uppercase"
+          style={{ ["--kk-delay"]: "70ms" } as React.CSSProperties}
+        >
           {copy.hero.eyebrow}
         </p>
 
         {/* ── THE NAME ────────────────────────────────────────────────────
             Two lines, tight leading. One heading, one accessible name. */}
         <h1 className="font-display text-name mt-6 w-full uppercase">
-          <span className="block">Kool</span>
-          <span className="text-cta block">Kalakaars</span>
+          <span className="kk-hero-name-a block">Kool</span>
+          <span className="kk-hero-name-b text-cta block">Kalakaars</span>
         </h1>
 
-        <p className="text-lead text-ink mt-6 max-w-xl text-balance">
+        <p
+          className="kk-hero-item text-lead text-ink mt-6 max-w-xl text-balance"
+          style={{ ["--kk-delay"]: "260ms" } as React.CSSProperties}
+        >
           {site.tagline}
         </p>
 
@@ -91,12 +97,15 @@ export function Hero() {
             visitor, and within the counting state the digit boxes are a fixed
             width (9 renders as 09) so ticking never reflows. Reserving space
             for the tallest state would just punch a hole in the other three. */}
-        <Countdown className="mt-10" />
+        <Countdown className="kk-hero-item mt-10" style={{ ["--kk-delay"]: "340ms" } as React.CSSProperties} />
 
         {/* ── THE TWO ACTIONS ─────────────────────────────────────────────
             Full-width stacked on a phone so both are easy thumb targets;
             side by side from 480px up. */}
-        <div className="mt-10 flex w-full max-w-md flex-col gap-3 min-[480px]:flex-row min-[480px]:justify-center">
+        <div
+          className="kk-hero-item mt-10 flex w-full max-w-md flex-col gap-3 min-[480px]:flex-row min-[480px]:justify-center"
+          style={{ ["--kk-delay"]: "420ms" } as React.CSSProperties}
+        >
           <Button
             href={copy.hero.primaryCta.href}
             variant="primary"
@@ -115,7 +124,12 @@ export function Hero() {
           </Button>
         </div>
 
-        <p className="text-small text-ink mt-5 font-bold">{copy.hero.footnote}</p>
+        <p
+          className="kk-hero-item text-small text-ink mt-5 font-bold"
+          style={{ ["--kk-delay"]: "500ms" } as React.CSSProperties}
+        >
+          {copy.hero.footnote}
+        </p>
       </div>
     </section>
   );
