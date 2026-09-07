@@ -15,3 +15,7 @@ lighthouse/
 # public/hero is committed. Keep the originals in your own storage; point
 # scripts/prepare-hero.mjs at them when you want to re-encode.
 Images/
+
+# Raw source video. Encoded output belongs in public/video; keep originals
+# in your own storage.
+Videos/
