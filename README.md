@@ -315,7 +315,7 @@ A few things need someone technical:
 | Making the ticket form actually save | `docs/APPS_SCRIPT.md` — **not working yet** |
 | Hindi wording check | `docs/HANDOVER.md` — every Hindi word is listed |
 | Photo credits | `docs/IMAGE_CREDITS.md` |
-| The hero video | Held off on purpose — see the note in the config |
+| Replacing the hero video | Put the new file in `Videos/`, then run `npm run prepare:video` |
 
 ---
 

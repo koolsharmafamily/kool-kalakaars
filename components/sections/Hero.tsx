@@ -22,6 +22,8 @@ import HeroBackdrop from "@/components/sections/HeroBackdrop";
 
 export function Hero() {
   const { site, copy, media, event } = siteConfig;
+  const filmIsTitle =
+    media.videoHasTitle && Boolean(media.heroVideoDesktop || media.heroVideoMobile);
 
   return (
     <section
@@ -83,8 +85,22 @@ export function Hero() {
         </p>
 
         {/* ── THE NAME ────────────────────────────────────────────────────
-            Two lines, tight leading. One heading, one accessible name. */}
-        <h1 className="font-display text-name mt-6 w-full uppercase">
+            Two lines, tight leading. One heading, one accessible name.
+
+            When the hero video has the name painted into it, the film is the
+            title and this heading drops to screen-reader-only — still the
+            page's one <h1>, still what search engines read, just not drawn a
+            second time on top of the artwork. The fallback for visitors who
+            never get the video (reduced motion, saveData, 2g) is a still
+            frame taken from that same film, so the name is on screen for
+            them too. */}
+        <h1
+          className={
+            filmIsTitle
+              ? "sr-only"
+              : "font-display text-name mt-6 w-full uppercase"
+          }
+        >
           <span className="kk-hero-name-a block">Kool</span>
           <span className="kk-hero-name-b text-cta block">Kalakaars</span>
         </h1>

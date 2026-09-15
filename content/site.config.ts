@@ -349,41 +349,29 @@ export const siteConfig = {
     logoHeight: 256,
 
     /**
-     * TODO: the hero video from Runway.
+     * THE HERO VIDEO — live. A muted, looping background behind the headline.
      *
-     * Three files are needed:
-     *   desktop  ~1080p, H.264 .mp4
-     *   mobile   ~720p, compressed hard, UNDER 2.5 MB
-     *   poster   a single still frame from the video, compressed hard
+     * Phones get the smaller file. Visitors who have asked for less motion,
+     * turned on data saver, or are on a very slow connection get a still frame
+     * instead and never download the video.
      *
-     * The poster is the important one — it is what visitors see first, and
-     * the site must look finished before any video has loaded.
+     * The video has KOOL KALAKAARS painted into it. That is fine: the big text
+     * headline sits directly over it and hides it, and the painted name only
+     * shows for part of each loop anyway. This was checked on a phone and a
+     * laptop at the moment the painted name is largest.
      *
-     * While all three are null the hero shows an animated pop-art gradient
-     * built in code. The site is complete and reviewable without the video.
+     * To replace the video: put the new master in Videos/, then have someone
+     * run  npm run prepare:video .
+     * To switch the video off: set both values below to null.
      */
+    heroVideoDesktop: "/video/hero-desktop.mp4" as string | null,
+    heroVideoMobile: "/video/hero-mobile.mp4" as string | null,
     /**
-     * The hero video. Encoded and ready at /video/hero-desktop.mp4 and
-     * /video/hero-mobile.mp4 — set the two values below to those paths and the
-     * video goes live. Everything else is already wired.
-     *
-     * ⚠️  HELD OFF DELIBERATELY. The current master has the words KOOL
-     * KALAKAARS painted into it, and the hero renders that name again as live
-     * HTML text. Both sit dead centre, so the name appears twice in two
-     * different typefaces. The 72% scrim mutes the video but does not hide
-     * lettering that large.
-     *
-     * Three ways to fix it, any of which makes this switch-on-able:
-     *   1. Re-render the master with no text in it (what the brief asked for)
-     *   2. Give the film its own section further down the page, where its
-     *      title card belongs and nothing competes with it
-     *   3. Keep the video here and drop the HTML wordmark to screen-reader-only
-     *      so the film supplies the title
-     *
-     * Re-generate the encodes after replacing the master: npm run prepare:video
+     * Leave this false. true hides the big text headline and lets the video
+     * supply the name — tried and rejected: the painted name is missing or cut
+     * off for over half of each loop, and phones never show all of it.
      */
-    heroVideoDesktop: null as string | null, // see the note above before setting
-    heroVideoMobile: null as string | null,  // see the note above before setting
+    videoHasTitle: false,
 
     /**
      * Poster for the video — a frame taken from the video itself, so there is
