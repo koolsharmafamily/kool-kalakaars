@@ -328,13 +328,25 @@ export const siteConfig = {
    * ═════════════════════════════════════════════════════════════════════════ */
   media: {
     /**
-     * TODO: the logo, once it is ready. A horizontal lockup works best.
-     * While this is null the hero shows a clearly marked placeholder slot at
-     * the correct size, so the layout does not move when the logo arrives.
+     * The logo, shown in the hero and the top navigation bar.
+     *
+     * This is the KK monogram on its pink badge. The pink is deliberate: the
+     * purple half of the logo is almost the same colour as the site's indigo
+     * background and disappears without it.
+     *
+     * These files are made from Images/KK Logo.jpeg. If the logo changes,
+     * replace that file and have someone run:  npm run prepare:logo
+     * That rebuilds these images AND the browser-tab icon.
+     *
+     * Also available in public/brand/:
+     *   kk-lockup-badge.png   the full logo with the name, on pink
+     *   kk-mark.png / kk-lockup.png   no background, for light pages only
+     *
+     * Set logo to null to go back to the text-only version.
      */
-    logo: null as string | null,
-    logoWidth: 320,
-    logoHeight: 80,
+    logo: "/brand/kk-mark-badge.png" as string | null,
+    logoWidth: 256,
+    logoHeight: 256,
 
     /**
      * TODO: the hero video from Runway.

@@ -43,7 +43,12 @@ export function Hero() {
             alt={site.name}
             width={media.logoWidth}
             height={media.logoHeight}
-            className="mb-8 h-16 w-auto sm:h-20"
+            // The mark, not the full lockup: the headline directly below
+            // already sets the name at 19vw, and repeating it in small
+            // lettering above would read as a typo rather than a logo.
+            fetchPriority="low"
+            className="kk-hero-item mb-8 h-24 w-auto rounded-[22%] shadow-[6px_6px_0_var(--color-ice)] sm:h-28"
+            style={{ ["--kk-delay"]: "0ms" } as React.CSSProperties}
           />
         ) : (
           <div

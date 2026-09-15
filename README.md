@@ -285,6 +285,27 @@ The footer link and the Google listing switch on by themselves.
 
 ---
 
+## Changing the logo
+
+The logo is already on the site — in the hero and the top bar — and it is
+also the little icon in the browser tab.
+
+To replace it:
+
+1. Save the new logo as `Images/KK Logo.jpeg`, on a flat single-colour
+   background, the same way the current one is.
+2. Someone technical runs `npm run prepare:logo`. That rebuilds every logo
+   image **and** the browser-tab icon in one go.
+
+**Why it sits on a pink square:** the purple half of the logo is almost the
+same colour as the site's purple background. Without the pink behind it, the K
+disappears. Please keep the badge unless the logo colours change.
+
+To hide the logo and show the plain text name instead, set `logo: null` in
+section **7. IMAGES AND VIDEO**.
+
+---
+
 ## Things that are NOT in the config file
 
 A few things need someone technical:
@@ -307,5 +328,4 @@ A few things need someone technical:
 - [ ] **Confirm the Chitnavis Centre wording** — the sponsor section says the
       Centre is *originating* the initiative, which is a strong claim about a
       named institution. There is a softer alternative in the config.
-- [ ] **Add the logo** when it is ready (`media.logo`).
 - [ ] **Register koolkalakaars.in** — it is not registered yet.

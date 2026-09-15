@@ -140,7 +140,7 @@ export function StickyNav({
               alt={siteName}
               width={logoWidth}
               height={logoHeight}
-              className="h-7 w-auto sm:h-8"
+              className="h-9 w-auto rounded-[22%]"
             />
           ) : (
             <>

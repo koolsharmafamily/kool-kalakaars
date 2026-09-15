@@ -12,7 +12,8 @@
     "lighthouse": "node scripts/lighthouse.mjs",
     "prepare:hero": "node scripts/prepare-hero.mjs",
     "prepare:fonts": "node scripts/subset-devanagari.mjs",
-    "prepare:video": "node scripts/prepare-video.mjs"
+    "prepare:video": "node scripts/prepare-video.mjs",
+    "prepare:logo": "node scripts/prepare-logo.mjs"
   },
   "dependencies": {
     "motion": "^13.2.0",
