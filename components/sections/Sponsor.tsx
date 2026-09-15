@@ -135,8 +135,13 @@ export function Sponsor() {
 
           {/* ── THE ACTIONS ─────────────────────────────────────────────────
               Deck first, then two direct routes to a human. Three ways to act
-              and none of them is a dead end. */}
-          <div className="mt-14">
+              and none of them is a dead end.
+
+              data-fab-avoid: on a phone both buttons are full width, and the
+              floating WhatsApp button was sitting on top of them — on the
+              most important actions on the site. Marked, it slides away while
+              this block is in the lower part of the screen. */}
+          <div className="mt-14" data-fab-avoid="">
             <div className="flex flex-col gap-3 min-[560px]:flex-row min-[560px]:flex-wrap">
               <a
                 href={deckHref}
@@ -175,7 +180,7 @@ export function Sponsor() {
               </p>
               <a
                 href={mailHref}
-                className="hover:text-cta text-lg font-bold break-all transition-colors"
+                className="hover:text-cta inline-flex min-h-11 items-center text-lg font-bold break-all transition-colors"
               >
                 {contact.email}
               </a>
@@ -189,7 +194,7 @@ export function Sponsor() {
                 href={waHref}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-cta text-lg font-bold transition-colors"
+                className="inline-flex min-h-11 items-center hover:text-cta text-lg font-bold transition-colors"
               >
                 {contact.phoneDisplay}
               </a>

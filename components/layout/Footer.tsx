@@ -37,11 +37,11 @@ export function Footer() {
             <h2 className="text-eyebrow text-cta font-bold uppercase">
               Contact
             </h2>
-            <ul className="mt-5 space-y-3">
+            <ul className="mt-4 space-y-0.5">
               <li>
                 <a
                   href={`tel:+${contact.phoneE164}`}
-                  className="text-ink hover:text-cta font-bold transition-colors"
+                  className="text-ink hover:text-cta inline-flex min-h-11 items-center font-bold transition-colors"
                 >
                   {contact.phoneDisplay}
                 </a>
@@ -49,7 +49,7 @@ export function Footer() {
               <li>
                 <a
                   href={`mailto:${contact.email}`}
-                  className="text-ink hover:text-cta font-bold break-all transition-colors"
+                  className="text-ink hover:text-cta inline-flex min-h-11 items-center font-bold break-all transition-colors"
                 >
                   {contact.email}
                 </a>
@@ -59,7 +59,7 @@ export function Footer() {
                   href={siteConfig.links.whatsappChat}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-ink-muted hover:text-cta text-small transition-colors"
+                  className="text-ink-muted hover:text-cta inline-flex min-h-11 items-center text-small transition-colors"
                 >
                   Message us on WhatsApp
                 </a>
@@ -80,7 +80,7 @@ export function Footer() {
               href={venue.mapLinkUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-small hover:text-cta mt-3 inline-block font-bold underline underline-offset-4 transition-colors"
+              className="text-small hover:text-cta mt-1 inline-flex min-h-11 items-center font-bold underline underline-offset-4 transition-colors"
             >
               Open in Google Maps
             </a>

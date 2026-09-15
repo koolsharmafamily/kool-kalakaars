@@ -258,7 +258,7 @@ export const siteConfig = {
     phoneDisplay: "+91 88888 21351",
     /** Used in links. Digits only, with country code, no spaces or plus sign. */
     phoneE164: PHONE_E164,
-    email: "koolkalakaars@gmail.com",
+    email: "enquiries@koolkalakaars.in",
     /** Who press should ask for. */
     pressContactName: "Kulvir Sharma",
   },

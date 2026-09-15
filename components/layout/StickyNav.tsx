@@ -105,7 +105,14 @@ export function StickyNav({
   // control that is not visible.
   const hidden = !past;
 
+  // If the bar slides away while the menu is open, the menu goes with it —
+  // otherwise it would be left floating with no visible control to close it.
+  useEffect(() => {
+    if (hidden) setOpen(false);
+  }, [hidden]);
+
   return (
+    <>
     <header
       className={[
         "fixed inset-x-0 top-0 z-50",
@@ -131,7 +138,8 @@ export function StickyNav({
             real logo lands. */}
         <Link
           href="#top"
-          className="font-display text-ink shrink-0 text-xl leading-none tracking-tight sm:text-2xl"
+          // min 44px square so the badge is a comfortable thumb target.
+          className="font-display text-ink inline-flex min-h-11 min-w-11 shrink-0 items-center text-xl leading-none tracking-tight sm:text-2xl"
         >
           {logo ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -174,7 +182,7 @@ export function StickyNav({
               wrapping or pushing the toggle off the edge. */}
           <Link
             href={primary.href}
-            className="bg-cta text-cta-ink hover:bg-brand hover:text-ice inline-flex items-center rounded-full px-4 py-2.5 text-sm font-extrabold whitespace-nowrap transition-colors sm:px-5"
+            className="min-h-11 bg-cta text-cta-ink hover:bg-brand hover:text-ice inline-flex items-center rounded-full px-4 py-2.5 text-sm font-extrabold whitespace-nowrap transition-colors sm:px-5"
           >
             <span className="hidden min-[400px]:inline">
               {primary.label}
@@ -219,11 +227,20 @@ export function StickyNav({
           </button>
         </div>
       </nav>
+    </header>
 
       {/* ── MOBILE PANEL ──────────────────────────────────────────────────
-          Rendered immediately after the toggle in the DOM so Tab order is
-          natural, and anchored to the BOTTOM of the viewport so the links
-          land under the thumb. Not a modal, not a focus trap. */}
+          Anchored to the BOTTOM of the viewport so the links land under the
+          thumb. Not a modal, not a focus trap.
+
+          IT MUST STAY OUTSIDE <header>. The header has backdrop-blur, and any
+          backdrop-filter makes an element the containing block for its
+          position:fixed descendants. Inside the header, "bottom: 0" meant the
+          bottom of the 69px bar, so the 264px panel rendered mostly above the
+          top of the screen — covering the close button, so on a phone the menu
+          could be opened but not closed. As a sibling it is fixed to the
+          viewport again, and it is still the next thing in the DOM after the
+          toggle, so Tab order is unchanged. */}
       <div
         ref={panelRef}
         id={panelId}
@@ -258,22 +275,22 @@ export function StickyNav({
           ))}
         </ul>
 
-        <div className="border-rule border-t px-4 py-4">
+        <div className="border-rule border-t px-4 py-2">
           <a
             href={`tel:+${phoneE164}`}
-            className="text-ink-muted text-small block font-bold"
+            className="text-ink-muted text-small flex min-h-11 items-center font-bold"
           >
             {phoneDisplay}
           </a>
           <a
             href={`mailto:${email}`}
-            className="text-ink-muted text-small mt-1 block break-all font-bold"
+            className="text-ink-muted text-small flex min-h-11 items-center break-all font-bold"
           >
             {email}
           </a>
         </div>
       </div>
-    </header>
+    </>
   );
 }
 
