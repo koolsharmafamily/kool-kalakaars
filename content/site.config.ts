@@ -547,7 +547,7 @@ export const siteConfig = {
       primaryCta: { label: "Get free ticket", href: "#tickets" },
       secondaryCta: { label: "Apply to perform", href: "#perform" },
       /** Reassurance under the buttons. */
-      footnote: "Free to attend. Free to apply.",
+      footnote: "Free to attend. Apply to perform.",
     },
 
     /* ─── THE IDEA ─────────────────────────────────────────────────────────
@@ -561,7 +561,7 @@ export const siteConfig = {
     idea: {
       eyebrow: "सुनो",
       heading: "The idea",
-      body: "Kool Kalakaars is a recurring live music competition and open mic in Nagpur. Three categories — open mic vocals, band showcase, solo instrumental. Free to attend, open to apply, hosted at Chitnavis Centre.",
+      body: "Kool Kalakaars is a recurring live music competition and open mic in Nagpur. Three categories — open mic vocals, band showcase, solo instrumental. Free to attend, applications open to performers, hosted at Chitnavis Centre.",
     },
 
     /* ─── SPONSORS AND PRESS BAND ──────────────────────────────────────────
@@ -653,7 +653,7 @@ export const siteConfig = {
       steps: [
         {
           title: "Entries open",
-          body: "Applications come in through a form with an audio or video sample attached. Applying costs nothing.",
+          body: "Applications come in through a form with an audio or video sample attached. A nominal application fee applies.",
         },
         {
           title: "Curation",
@@ -759,7 +759,12 @@ export const siteConfig = {
     perform: {
       eyebrow: "चलो, दिखाओ",
       heading: "Apply to perform",
-      lead: "Applying is free. If you are selected, there is a small nominal fee to confirm your slot — nothing before that.",
+      /**
+       * ⚠️  Applying is NOT free. State the fee amount and when it is paid
+       * here once confirmed — the site currently says only that a nominal
+       * fee applies, and does not invent a figure.
+       */
+      lead: "Entry is free for the audience. Performers pay a nominal application fee.",
       /**
        * [FACTUAL] — this list mirrors the live Google Form question for
        * question, checked against it directly. The whole point is that

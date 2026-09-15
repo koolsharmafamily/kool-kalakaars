@@ -18,9 +18,9 @@ import SectionHeading from "@/components/ui/SectionHeading";
  * worse than no preview.
  *
  * ── THE MONEY ───────────────────────────────────────────────────────────────
- * Applying is free. The nominal fee applies only on selection. That is stated
- * twice, in the lead and again beside the button, because it is the single
- * thing most likely to stop somebody applying.
+ * Applying carries a nominal fee; attending is free. Stated plainly in the
+ * lead and again in the callout, so nobody fills in the whole form before
+ * discovering it.
  */
 
 export function Perform() {
@@ -39,10 +39,9 @@ export function Perform() {
 
         <p className="text-lead text-ink-muted mt-6 max-w-2xl">{p.lead}</p>
 
-        {/* ── FREE TO APPLY, SAID PLAINLY ──────────────────────────────── */}
+        {/* ── THE FEE, SAID PLAINLY ──────────────────────────────────── */}
         <p className="border-cta text-ink mt-8 inline-flex max-w-2xl border-l-4 py-2 pl-4 font-bold">
-          Applying costs nothing. The nominal fee is payable only if you are
-          selected.
+          A nominal application fee applies. Watching is always free.
         </p>
 
         <div className="mt-14 grid gap-12 lg:grid-cols-[1.1fr_1fr] lg:gap-16">

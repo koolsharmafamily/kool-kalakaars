@@ -64,7 +64,7 @@ const TYPE = [
   { token: "text-d3", spec: "clamp(1.5rem → 4.5vw → 2.5rem) / 1.0", face: "display", sample: "How a night runs" },
   { token: "text-lead", spec: "clamp(1.125rem → 2.5vw → 1.5rem) / 1.45", face: "body", sample: "Entry is free. This is only so we know how many chairs to put out." },
   { token: "text-body", spec: "1rem / 1.6", face: "body", sample: "A recurring live music competition and open mic in Nagpur, hosted at Chitnavis Centre." },
-  { token: "text-small", spec: "0.875rem / 1.5", face: "body", sample: "Applying is free. The nominal fee is payable only if you are selected." },
+  { token: "text-small", spec: "0.875rem / 1.5", face: "body", sample: "A nominal application fee applies. Watching is always free." },
   { token: "text-micro", spec: "0.75rem / 1.4 / 0.06em", face: "body", sample: "Kool Kalakaars is an independent, not-for-profit initiative." },
 ];
 
