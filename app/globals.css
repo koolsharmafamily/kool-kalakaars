@@ -500,6 +500,90 @@
    pinned track becomes an ordinary stack, parallax stops, hover stops.
    ═══════════════════════════════════════════════════════════════════════════ */
 
+/* ── SKIP LAYOUT FOR SECTIONS THAT ARE NOT ON SCREEN YET ─────────────────
+   Measured, not assumed. On an emulated mid-range phone the single biggest
+   thing delaying the hero video was not JavaScript: it was one ~900ms layout
+   pass over the ENTIRE page on first load (809ms Layout + 85ms style, with
+   script evaluation inside it ~0ms). The video cannot advance until the main
+   thread is free again.
+
+   content-visibility: auto tells the browser to skip layout and paint for any
+   section outside the viewport until it is about to scroll into view. Tested
+   against the alternatives — turning off balanced text wrap made no
+   difference; blocking web fonts barely moved it — this took roughly 0.4–0.5s
+   off the time to the video playing.
+
+   The hero is excluded: it is on screen and must lay out immediately.
+
+   contain-intrinsic-size is each section's REAL height, measured at 360px and
+   1280px. It is only a placeholder until the section first renders (`auto`
+   then remembers the true size), but a realistic placeholder keeps the
+   scrollbar honest and makes nav jumps like #tickets land in the right place.
+   If a section grows a lot, update its number here.
+
+   SPECIFICITY: the per-section rules are written `main > section#id`, not
+   `#id`. The base rule's :not(#top) counts as an ID, so a bare #id loses to
+   it and every section silently got the 900px fallback — nav jumps landed
+   1,300–2,800px short. Caught by testing the jumps, not by reading the CSS.
+
+   RELEASED AFTER LOAD: skipping layout is only needed for the first load. A
+   small script in app/layout.tsx adds .kk-cv-done once the hero video is
+   playing (or after 4s) and the browser is idle — and immediately, before the
+   jump, if someone taps an in-page link sooner. From then on every section
+   is laid out for real, so jumps land exactly on any screen width, not just
+   the two widths the placeholder heights were measured at.
+
+   overflow-clip-margin: containment clips painting to the section box, and
+   two sections have decorative halftone that deliberately bleeds past their
+   edges. This gives it room instead of cutting it off. */
+main > section:not(#top) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 900px;
+  overflow-clip-margin: 160px;
+}
+  main > section#idea { contain-intrinsic-size: auto 493px; }
+  main > section#why { contain-intrinsic-size: auto 1201px; }
+  main > section#categories { contain-intrinsic-size: auto 2233px; }
+  main > section#format { contain-intrinsic-size: auto 1259px; }
+  main > section#venue { contain-intrinsic-size: auto 862px; }
+  main > section#sponsor { contain-intrinsic-size: auto 1793px; }
+  main > section#tickets { contain-intrinsic-size: auto 1017px; }
+  main > section#perform { contain-intrinsic-size: auto 1604px; }
+  main > section#community { contain-intrinsic-size: auto 494px; }
+.kk-cv-done main > section:not(#top) {
+  content-visibility: visible;
+}
+@media (min-width: 768px) {
+  main > section#idea { contain-intrinsic-size: auto 609px; }
+  main > section#why { contain-intrinsic-size: auto 782px; }
+  main > section#categories { contain-intrinsic-size: auto 2000px; }
+  main > section#format { contain-intrinsic-size: auto 1242px; }
+  main > section#venue { contain-intrinsic-size: auto 819px; }
+  main > section#sponsor { contain-intrinsic-size: auto 1252px; }
+  main > section#tickets { contain-intrinsic-size: auto 1106px; }
+  main > section#perform { contain-intrinsic-size: auto 1245px; }
+  main > section#community { contain-intrinsic-size: auto 603px; }
+}
+
+/* ── HERO VIDEO ──────────────────────────────────────────────────────────
+   Invisible until the video is ACTUALLY playing (data-playing is set by the
+   inline script in HeroMedia on the `playing` event). If a phone refuses
+   autoplay, the video is never shown and the poster underneath stays — so the
+   browser's centred play button has nothing to appear on. Opacity only. */
+.kk-hero-video {
+  opacity: 0;
+  transition: opacity 0.45s ease-out;
+}
+.kk-hero-video[data-playing] {
+  opacity: 1;
+}
+.kk-hero-video::-webkit-media-controls,
+.kk-hero-video::-webkit-media-controls-start-playback-button,
+.kk-hero-video::-webkit-media-controls-overlay-play-button {
+  display: none !important;
+  -webkit-appearance: none;
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

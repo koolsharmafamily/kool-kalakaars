@@ -62,6 +62,31 @@ export default function RootLayout({
           href={siteConfig.links.whatsappChat}
           label={`Message ${siteConfig.site.name} on WhatsApp`}
         />
+
+        {/* ── RELEASE THE LAYOUT SKIP ─────────────────────────────────────
+            See "SKIP LAYOUT FOR SECTIONS THAT ARE NOT ON SCREEN YET" in
+            globals.css. content-visibility is a first-load optimisation
+            only; this turns it off once it has done its job, and forces it
+            off before any in-page jump so the jump lands in the right place. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){
+var root=document.documentElement,done=false;
+function release(){if(done)return;done=true;root.classList.add("kk-cv-done");}
+document.addEventListener("click",function(e){
+  var a=e.target&&e.target.closest&&e.target.closest('a[href^="#"]');
+  if(a&&!done){release();void document.body.offsetHeight;}
+},true);
+var played=false,loaded=false;
+function maybe(){if(played&&loaded){(window.requestIdleCallback||function(f){setTimeout(f,200)})(release,{timeout:2000});}}
+document.addEventListener("playing",function(e){if(e.target&&e.target.id==="kk-hero-video"){played=true;maybe();}},true);
+setTimeout(function(){played=true;maybe();},4000);
+if(!document.getElementById("kk-hero-video"))played=true;
+if(document.readyState==="complete"){loaded=true;maybe();}else window.addEventListener("load",function(){loaded=true;maybe();});
+if(location.hash)release();
+})();`,
+          }}
+        />
       </body>
     </html>
   );

@@ -41,9 +41,21 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const SRC = join(ROOT, "Videos", "Indie_music_animation.mp4");
 const OUT = join(ROOT, "public", "video");
 
+/**
+ * Tuned for STARTING FAST on a phone, not for how the file looks paused.
+ *
+ * The old mobile encode (CRF 33) averaged 918 kb/s. A typical Indian 4G
+ * connection cannot reliably download that faster than it plays, so the
+ * browser waited to buffer before starting. These settings were chosen by
+ * encoding six candidates and comparing frames: 480p at CRF 41 capped at
+ * 550 kb/s came out at ~400 kb/s and 490 KB — under half — and still reads
+ * clearly under the 72% scrim. 360p was lighter but visibly soft.
+ *
+ * maxrate/bufsize cap the busiest moments so no single second spikes.
+ */
 const ENCODES = [
-  { name: "hero-desktop", scale: "1280:720", crf: 32 },
-  { name: "hero-mobile", scale: "854:480", crf: 33 },
+  { name: "hero-desktop", scale: "1280:720", crf: 36, maxrate: "1100k", bufsize: "2200k" },
+  { name: "hero-mobile", scale: "854:480", crf: 41, maxrate: "550k", bufsize: "1100k" },
 ];
 
 /** Poster frames, matching the encodes so the swap to video is seamless. */
@@ -65,12 +77,20 @@ async function run() {
       "-i", SRC,
       "-an",
       "-c:v", "libx264",
-      "-preset", "slow",
+      "-preset", "veryslow",
       "-crf", String(enc.crf),
+      "-maxrate", enc.maxrate,
+      "-bufsize", enc.bufsize,
+      // A keyframe every 2s (24 fps). The old file had two in ten seconds;
+      // a player can only begin cleanly at a keyframe, and loops restart on
+      // one. -sc_threshold 0 stops extra ones being inserted on scene cuts.
+      "-g", "48",
+      "-keyint_min", "48",
+      "-sc_threshold", "0",
       "-pix_fmt", "yuv420p",
       "-profile:v", "main",
       "-movflags", "+faststart",
-      "-vf", `scale=${enc.scale}`,
+      "-vf", `scale=${enc.scale}:flags=lanczos`,
       out,
     ]);
     console.log(`  ${enc.name.padEnd(16)} ${enc.scale.padEnd(9)} crf ${enc.crf}   ${kb(out)} KB`);

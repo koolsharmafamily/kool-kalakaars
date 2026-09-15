@@ -7,6 +7,26 @@ const nextConfig: NextConfig = {
     formats: ["image/avif", "image/webp"],
   },
 
+  /**
+   * VIDEO CACHING — a year, but only for URLs carrying ?v=<file hash>.
+   *
+   * HeroMedia adds that hash at build time, so the URL changes whenever the
+   * file does. That makes it safe to tell browsers never to re-check: a
+   * replaced video gets a new URL and is fetched fresh. Without ?v= the file
+   * keeps Vercel's default of revalidating every visit.
+   */
+  async headers() {
+    return [
+      {
+        source: "/video/:file*",
+        has: [{ type: "query", key: "v" }],
+        headers: [
+          { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+        ],
+      },
+    ];
+  },
+
   experimental: {
     /**
      * CRITICAL CSS — inline the stylesheet into the HTML instead of linking it.

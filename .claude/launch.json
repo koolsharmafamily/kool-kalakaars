@@ -4,8 +4,23 @@
     {
       "name": "kool-kalakaars",
       "runtimeExecutable": "npm",
-      "runtimeArgs": ["run", "dev"],
+      "runtimeArgs": [
+        "run",
+        "dev"
+      ],
       "port": 3000
+    },
+    {
+      "name": "kool-kalakaars-prod",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": [
+        "run",
+        "start",
+        "--",
+        "-p",
+        "3400"
+      ],
+      "port": 3400
     }
   ]
 }
